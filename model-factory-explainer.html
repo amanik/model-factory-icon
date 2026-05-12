@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Model Training Factory works — Blue Yonder AI Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo:    #3660bd;
+    --indigo-d:  #2a4f9e;
+    --indigo-l:  #4a7ad4;
+    --indigo-bg: rgba(54,96,189,0.06);
+
+    --bg:      #fcfcfd;
+    --card:    #ffffff;
+    --card-alt:#f9f9fb;
+
+    --50:  #fcfcfd;  --100: #f9f9fb;  --200: #ebebeb;
+    --300: #e6e6eb;  --400: #9ca3af;  --500: #6b7280;
+    --600: #4b5563;  --700: #374151;  --800: #1f2937;
+    --900: #111827;
+
+    --success: #10b981;  --warn: #f59e0b;  --critical: #e11d48;
+
+    --sans: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --shadow-2: 0 1px 4px rgba(0,0,50,0.09), 0 2px 1px -1px rgba(0,0,0,0.05);
+    --shadow-3: 0 3px 12px -4px rgba(0,0,0,0.1), 0 4px 16px -8px rgba(0,0,0,0.08);
+    --r-card: 12px;
+    --r-pill: 999px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--700);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 120px;
+  }
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 48px;
+  }
+  @media (max-width: 920px) {
+    .page { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+
+  /* ── nav ──────────────────────────────── */
+  nav {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    font-size: 13px;
+  }
+  nav .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--500);
+    margin-bottom: 12px;
+  }
+  nav a {
+    display: block;
+    padding: 5px 0 5px 12px;
+    border-left: 2px solid var(--300);
+    color: var(--700);
+    text-decoration: none;
+    transition: color 120ms, border-color 120ms;
+  }
+  nav a:hover, nav a.active { color: var(--900); border-color: var(--indigo); }
+  nav a.l2 { padding-left: 24px; font-size: 12.5px; color: var(--500); }
+  nav .files {
+    margin-top: 28px;
+    border-top: 1px solid var(--300);
+    padding-top: 16px;
+  }
+  nav .files code {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--500);
+    padding: 3px 0;
+  }
+  nav .badge {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 5px 10px;
+    background: var(--indigo-bg);
+    border: 1px solid rgba(54,96,189,0.2);
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--indigo);
+  }
+
+  /* ── header ───────────────────────────── */
+  header { margin-bottom: 16px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--500);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--indigo); }
+  h1 {
+    font-weight: 800;
+    font-size: 32px;
+    color: var(--900);
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  h1 em { font-style: normal; color: var(--indigo); }
+  .tldr {
+    border: 1.5px solid var(--300);
+    border-left: 3px solid var(--indigo);
+    border-radius: 10px;
+    background: var(--card);
+    padding: 16px 18px;
+    margin-bottom: 8px;
+  }
+  .tldr b { color: var(--900); }
+
+  h2 {
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--900);
+    margin: 44px 0 14px;
+    scroll-margin-top: 24px;
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--800);
+    margin: 28px 0 10px;
+  }
+  p { margin-bottom: 12px; max-width: 680px; }
+  code { font-family: var(--mono); font-size: 13px; }
+  strong { color: var(--900); }
+
+  /* ── collapsible ─────────────────────── */
+  details {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--900);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "\25B8";
+    color: var(--indigo);
+    font-size: 12px;
+    transition: transform 120ms;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  summary .where {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--500);
+    margin-left: auto;
+  }
+  details .body { padding: 0 16px 16px; }
+  details .body p { font-size: 14px; }
+  details .body ul { padding-left: 18px; list-style: disc; margin-bottom: 10px; }
+  details .body li { font-size: 14px; margin-bottom: 4px; color: var(--600); }
+
+  /* ── callout ──────────────────────────── */
+  .callout {
+    display: flex;
+    gap: 12px;
+    border: 1.5px solid var(--300);
+    border-left: 3px solid var(--indigo);
+    background: var(--indigo-bg);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    font-size: 14px;
+  }
+  .callout .ico { color: var(--indigo); font-weight: 600; flex-shrink: 0; }
+
+  /* ── comparison grid ─────────────────── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
+  .compare-card {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    padding: 16px 18px;
+  }
+  .compare-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--800);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--300);
+  }
+  .compare-card.accent { border-color: var(--indigo); border-left-width: 3px; }
+  .compare-card ul { padding-left: 18px; list-style: disc; }
+  .compare-card li { font-size: 13.5px; margin-bottom: 5px; color: var(--600); }
+
+  /* ── architecture flow ───────────────── */
+  .arch-flow {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 16px 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .arch-step {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+  .arch-box {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+  .arch-box .num {
+    display: inline-flex;
+    width: 22px; height: 22px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--indigo);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .arch-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--900);
+    margin: 0;
+    white-space: nowrap;
+  }
+  .arch-desc {
+    font-size: 11.5px;
+    color: var(--500);
+    line-height: 1.45;
+    padding: 0 4px;
+  }
+  .arch-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--400);
+    font-size: 16px;
+    flex-shrink: 0;
+    padding-top: 12px;
+  }
+  @media (max-width: 800px) {
+    .arch-flow { flex-direction: column; align-items: stretch; }
+    .arch-arrow { transform: rotate(90deg); justify-content: center; padding-top: 0; }
+    .arch-step { min-width: 0; }
+  }
+
+  /* ── tabs ─────────────────────────────── */
+  .tabs {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    margin: 16px 0 8px;
+    overflow: hidden;
+  }
+  .tabbar {
+    display: flex;
+    border-bottom: 1px solid var(--300);
+    background: var(--card-alt);
+  }
+  .tabbar button {
+    appearance: none;
+    border: none;
+    background: none;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--500);
+    padding: 10px 16px;
+    cursor: pointer;
+    border-right: 1px solid var(--300);
+    transition: color 120ms;
+  }
+  .tabbar button:hover { color: var(--800); }
+  .tabbar button.on {
+    background: var(--card);
+    color: var(--indigo);
+    border-bottom: 2px solid var(--indigo);
+    margin-bottom: -1px;
+  }
+  .tab-content { display: none; padding: 16px 18px; font-size: 14px; line-height: 1.65; }
+  .tab-content.on { display: block; }
+  .tab-content ul { padding-left: 18px; list-style: disc; }
+  .tab-content li { margin-bottom: 6px; }
+
+  /* ── autonomy track ──────────────────── */
+  .autonomy {
+    display: flex;
+    align-items: flex-start;
+    margin: 16px 0;
+    position: relative;
+  }
+  .autonomy::before {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 16px;
+    right: 16px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--success), var(--indigo));
+    border-radius: 2px;
+  }
+  .auto-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .auto-step .dot {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    border: 2.5px solid var(--300);
+    background: var(--bg);
+  }
+  .auto-step.done .dot { border-color: var(--success); background: var(--success); }
+  .auto-step.current .dot { border-color: var(--indigo); background: var(--indigo); box-shadow: 0 0 0 4px rgba(54,96,189,0.2); }
+  .auto-step .lbl { font-size: 12px; font-weight: 600; color: var(--900); }
+  .auto-step .sub { font-size: 11px; color: var(--500); }
+
+  /* ── preview image ───────────────────── */
+  .preview-frame {
+    border: 1.5px solid var(--300);
+    border-radius: var(--r-card);
+    overflow: hidden;
+    margin: 16px 0;
+    background: var(--card);
+    box-shadow: var(--shadow-3);
+  }
+  .preview-frame img { width: 100%; display: block; }
+  .preview-frame .caption {
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--500);
+    border-top: 1px solid var(--200);
+    background: var(--card-alt);
+  }
+
+  /* ── agent workflow ──────────────────── */
+  .agent-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 20px;
+    flex-wrap: wrap;
+  }
+  .af-step {
+    padding: 8px 14px;
+    border: 1.5px solid var(--300);
+    border-radius: 8px;
+    background: var(--card);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--700);
+  }
+  .af-step.hl { border-color: var(--indigo); background: var(--indigo-bg); color: var(--indigo); }
+  .af-arrow { color: var(--400); font-size: 14px; }
+
+  /* ── enablement cards ────────────────── */
+  .enable-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 700px) { .enable-grid { grid-template-columns: 1fr; } }
+  .enable-card {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    padding: 16px 18px;
+  }
+  .enable-card .track {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    margin-bottom: 6px;
+  }
+  .enable-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--900);
+    margin-bottom: 8px;
+  }
+  .enable-card p { font-size: 13.5px; margin-bottom: 8px; max-width: none; }
+  .enable-card ul { padding-left: 18px; list-style: disc; }
+  .enable-card li { font-size: 13px; margin-bottom: 4px; color: var(--600); }
+  .enable-card .note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--500);
+    font-style: italic;
+  }
+
+  /* ── FAQ pills + accordion ───────────── */
+  .faq-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 12px 0 24px;
+  }
+  .faq-pill {
+    appearance: none;
+    border: 1.5px solid var(--300);
+    background: var(--card);
+    border-radius: var(--r-pill);
+    padding: 7px 16px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--600);
+    cursor: pointer;
+    transition: all 120ms;
+  }
+  .faq-pill:hover { border-color: var(--indigo); color: var(--indigo); }
+  .faq-pill.active {
+    background: var(--indigo);
+    border-color: var(--indigo);
+    color: #fff;
+  }
+  .faq-pill .n {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.65;
+    margin-left: 3px;
+  }
+  .faq-group { display: none; }
+  .faq-group.active { display: block; }
+  .faq-group-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--500);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--200);
+  }
+  .faq-item {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    appearance: none;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    padding: 14px 16px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--900);
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .faq-q .qn { color: var(--indigo); font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .faq-q .chev {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--400);
+    transition: transform 200ms;
+  }
+  .faq-item.open .faq-q .chev { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease;
+  }
+  .faq-item.open .faq-a { max-height: 600px; }
+  .faq-a-inner {
+    padding: 0 16px 14px;
+    font-size: 14px;
+    color: var(--600);
+    line-height: 1.65;
+  }
+  .faq-a-inner ul { padding-left: 18px; list-style: disc; margin: 6px 0 8px; }
+  .faq-a-inner li { margin-bottom: 4px; }
+
+  /* ── footer ──────────────────────────── */
+  .site-footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--300);
+    font-size: 12px;
+    color: var(--500);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .site-footer img { height: 20px; width: auto; opacity: 0.6; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── side nav ── -->
+  <nav>
+    <div class="label">On this page</div>
+    <a href="#tldr">TL;DR</a>
+    <a href="#why-specialized">Why specialized AI</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#architecture" class="l2">1. Data Layer</a>
+    <a href="#architecture" class="l2">2. Cognitive Gym</a>
+    <a href="#architecture" class="l2">3. Training</a>
+    <a href="#architecture" class="l2">4. Agents</a>
+    <a href="#architecture" class="l2">5. Evaluation</a>
+    <a href="#impact">Why it matters</a>
+    <a href="#example">First example</a>
+    <a href="#enablement">Enablement</a>
+    <a href="#faq">FAQ</a>
+    <div class="files">
+      <div class="label">Source docs</div>
+      <code>Model Training Factory MegaDoc</code>
+      <code>PRFAQ Draft</code>
+      <code>Architecture Diagrams</code>
+    </div>
+    <span class="badge">ICON 2026</span>
+  </nav>
+
+  <!-- ── main ── -->
+  <main>
+    <header>
+      <div class="eyebrow">Blue Yonder AI Platform &middot; sales enablement</div>
+      <h1>How the <em>Model Training Factory</em> works</h1>
+      <div class="tldr" id="tldr">
+        <b>TL;DR</b> &mdash; The Model Factory is a repeatable system for building, evaluating, and deploying
+        specialized AI capabilities for supply chain operations. It combines operational data, simulation
+        environments, layered training (SFT, DPO, RL), and continuous evaluation to produce operational agents
+        &mdash; not chatbots. The first agent investigates allocation shortages end-to-end in warehouse operations.
+      </div>
+    </header>
+
+    <!-- ══ WHY SPECIALIZED ══ -->
+    <h2 id="why-specialized">Why generic AI fails in supply chain</h2>
+    <p>General-purpose LLMs are strong at language understanding, but supply chain operations require
+      capabilities that generic models don't provide out of the box.</p>
+
+    <div class="compare">
+      <div class="compare-card">
+        <h4>Generic AI</h4>
+        <ul>
+          <li>General-purpose language understanding</li>
+          <li>Prompt-based, stateless interactions</li>
+          <li>No operational context or workflow awareness</li>
+          <li>Cannot execute against enterprise systems</li>
+          <li>No continuous improvement from operations</li>
+        </ul>
+      </div>
+      <div class="compare-card accent">
+        <h4>Operational AI (Model Factory)</h4>
+        <ul>
+          <li>Domain-specialized reasoning</li>
+          <li>Structured multi-step planning</li>
+          <li>Deep operational context and state awareness</li>
+          <li>Tool orchestration and API execution</li>
+          <li>Continuous learning from evaluation loops</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="ico">&#10148;</span>
+      <div>The output of the Model Factory is not a chatbot. It is an operational agent combining
+        reasoning, operational context, workflow execution, and enterprise integrations into a unified system.</div>
+    </div>
+
+    <!-- ══ ARCHITECTURE ══ -->
+    <h2 id="architecture">The five-component architecture</h2>
+    <p>Each component feeds the next. Evaluation results loop back into the data layer, creating a continuous
+      improvement flywheel.</p>
+
+    <div class="arch-flow">
+      <div class="arch-step">
+        <div class="arch-box"><span class="num">1</span><h4>Data Layer</h4></div>
+        <div class="arch-desc">Operational workflows, transactional patterns, simulation trajectories, SME examples</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-step">
+        <div class="arch-box"><span class="num">2</span><h4>Cognitive Gym</h4></div>
+        <div class="arch-desc">High-speed simulation mirroring operational workflows and APIs</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-step">
+        <div class="arch-box"><span class="num">3</span><h4>Training</h4></div>
+        <div class="arch-desc">SFT, DPO, reinforcement learning, evaluation harnesses</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-step">
+        <div class="arch-box"><span class="num">4</span><h4>Agents</h4></div>
+        <div class="arch-desc">Reasoning + context + workflow execution + integrations</div>
+      </div>
+      <div class="arch-arrow">&rarr;</div>
+      <div class="arch-step">
+        <div class="arch-box"><span class="num">5</span><h4>Evaluation</h4></div>
+        <div class="arch-desc">Scenario replay, benchmarks, guardrails, human review</div>
+      </div>
+    </div>
+
+    <p>Expand each component to see what it does and where the key capabilities live.</p>
+
+    <details open>
+      <summary>1 &middot; Operational Data Layer <span class="where">data ingestion</span></summary>
+      <div class="body">
+        <p>Operational intelligence requires operational data. The Model Factory uses multiple sources of
+          operational context and workflow information to build realism and diversity that allows models to
+          generalize across different warehouse environments and scenarios.</p>
+        <ul>
+          <li>Warehouse operational workflows</li>
+          <li>Transactional patterns</li>
+          <li>Simulation trajectories</li>
+          <li>Evaluation datasets</li>
+          <li>SME-guided operational examples</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>2 &middot; Cognitive Gym <span class="where">simulation env</span></summary>
+      <div class="body">
+        <p>A high-speed simulation environment that mirrors operational workflows and APIs without impacting
+          production systems. The gym allows the team to move beyond static prompting into iterative
+          operational systems training.</p>
+        <ul>
+          <li>Rapid experimentation</li>
+          <li>Safe failure testing</li>
+          <li>Reinforcement learning episodes</li>
+          <li>Trajectory generation at scale</li>
+          <li>Repeatable evaluations</li>
+          <li>Scalable operational learning</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>3 &middot; Training &amp; Continuous Learning <span class="where">fine-tuning pipeline</span></summary>
+      <div class="body">
+        <p>Rather than training frontier-scale foundation models from scratch, Blue Yonder builds on top of
+          strong open-source foundation models and specializes them for operational workflows using a layered
+          learning approach.</p>
+        <ul>
+          <li>Domain adaptation</li>
+          <li>Supervised Fine-Tuning (SFT)</li>
+          <li>Preference Optimization (DPO)</li>
+          <li>Reinforcement Learning</li>
+          <li>Evaluation Harnesses</li>
+          <li>Regression Testing</li>
+          <li>Continuous trajectory collection</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>4 &middot; Operational Agents <span class="where">execution layer</span></summary>
+      <div class="body">
+        <p>The output of the Model Factory is an operational agent combining reasoning, operational context,
+          workflow execution, and enterprise integrations into a unified system.</p>
+        <ul>
+          <li>Understanding operational state</li>
+          <li>Investigating warehouse scenarios</li>
+          <li>Using enterprise tools and APIs</li>
+          <li>Executing structured workflows</li>
+          <li>Recommending operational actions</li>
+          <li>Supporting workflow automation</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>5 &middot; Evaluation &amp; Safety <span class="where">quality gates</span></summary>
+      <div class="body">
+        <p>Evaluation is a first-class component. Operational AI systems require measurable reliability,
+          consistency, and safety. The goal is operational correctness and repeatability &mdash; not simply
+          generating plausible answers.</p>
+        <ul>
+          <li>Scenario replay and benchmark suites</li>
+          <li>Automated evaluation pipelines</li>
+          <li>Human review gates</li>
+          <li>Regression testing</li>
+          <li>Confidence thresholds</li>
+          <li>Guardrails and escalation mechanisms</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- ══ IMPACT ══ -->
+    <h2 id="impact">Why this matters</h2>
+    <p>The Model Factory enables Blue Yonder to move beyond static AI assistants toward operational
+      intelligence systems. The long-term advantage compounds from systems, data, and continuous learning.</p>
+
+    <div class="tabs" data-tabs>
+      <div class="tabbar">
+        <button class="on" data-t="0">Business Impact</button>
+        <button data-t="1">Strategic Impact</button>
+        <button data-t="2">Autonomy Levels</button>
+      </div>
+      <div class="tab-content on">
+        <ul>
+          <li><strong>Faster resolution</strong> &mdash; Operational issues investigated and resolved in minutes, not hours</li>
+          <li><strong>Workflow automation</strong> &mdash; Multi-step processes executed end-to-end by agents</li>
+          <li><strong>Scalable expertise</strong> &mdash; Operational knowledge available 24/7 across all sites</li>
+          <li><strong>Continuous improvement</strong> &mdash; Every interaction makes the system better</li>
+          <li><strong>Reduced overhead</strong> &mdash; Less manual investigation, more strategic decision-making</li>
+        </ul>
+      </div>
+      <div class="tab-content">
+        <ul>
+          <li><strong>Operational data flywheel</strong> &mdash; Each deployment generates training signal</li>
+          <li><strong>Domain expertise accumulation</strong> &mdash; Tacit knowledge captured systematically</li>
+          <li><strong>Evaluation infrastructure</strong> &mdash; Measurable, repeatable quality standards</li>
+          <li><strong>Simulation environments</strong> &mdash; Safe learning at scale</li>
+          <li><strong>Workflow integrations</strong> &mdash; Deep enterprise system connectivity</li>
+          <li><strong>Continuous learning systems</strong> &mdash; Always improving, never static</li>
+        </ul>
+      </div>
+      <div class="tab-content">
+        <p style="margin-bottom:16px;">The Model Factory enables progression toward higher levels of intelligent automation:</p>
+        <div class="autonomy">
+          <div class="auto-step done"><div class="dot"></div><div class="lbl">Chat</div><div class="sub">Q&amp;A</div></div>
+          <div class="auto-step done"><div class="dot"></div><div class="lbl">Copilots</div><div class="sub">Assisted</div></div>
+          <div class="auto-step done"><div class="dot"></div><div class="lbl">Workflow</div><div class="sub">Execution</div></div>
+          <div class="auto-step current"><div class="dot"></div><div class="lbl">Agents</div><div class="sub">We are here</div></div>
+          <div class="auto-step"><div class="dot"></div><div class="lbl">Autonomous</div><div class="sub">Operations</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="ico">&#10148;</span>
+      <div>The advantage is not in a single model &mdash; it is in the system and flywheel around the model.
+        Together, these create compounding operational intelligence over time.</div>
+    </div>
+
+    <!-- ══ FIRST EXAMPLE ══ -->
+    <h2 id="example">First example: Allocation Shorts Agent</h2>
+    <p>The first operational agent built using the Model Factory addresses one of the most common and
+      time-consuming warehouse challenges: investigating allocation shortages.</p>
+
+    <details open>
+      <summary>What the agent does <span class="where">warehouse ops</span></summary>
+      <div class="body">
+        <p>When a warehouse cannot fully allocate inventory to outbound orders, operators must investigate
+          why. This involves navigating multiple systems, checking inventory status, reviewing order
+          priorities, and identifying root causes. Today, this process is manual and requires deep operational
+          knowledge.</p>
+        <p>The Allocation Shorts Agent automates this investigation workflow end-to-end, combining reasoning
+          about operational state with structured tool use across enterprise systems.</p>
+      </div>
+    </details>
+
+    <h3>Agent workflow</h3>
+    <div class="agent-flow">
+      <div class="af-step">User Request</div>
+      <span class="af-arrow">&rarr;</span>
+      <div class="af-step hl">Agent Reasoning</div>
+      <span class="af-arrow">&rarr;</span>
+      <div class="af-step">Tool / API Calls</div>
+      <span class="af-arrow">&rarr;</span>
+      <div class="af-step">Analysis</div>
+      <span class="af-arrow">&rarr;</span>
+      <div class="af-step hl">Recommendation</div>
+    </div>
+
+    <div class="preview-frame">
+      <img src="allocation-preview.png" alt="Allocation Shorts Agent — resolution flow showing inventory recovery, yard move actions, and shorts fulfilled tracker">
+      <div class="caption">Agent resolves allocation shorts: identifies recoverable inventory, executes yard move, tracks fulfillment via Live Activity</div>
+    </div>
+
+    <h3>Additional use cases</h3>
+    <p>The same Model Factory infrastructure supports building agents for:</p>
+    <ul style="padding-left:20px; list-style:disc; max-width:680px;">
+      <li style="margin-bottom:6px;">Short order investigation</li>
+      <li style="margin-bottom:6px;">Yard management optimization</li>
+      <li style="margin-bottom:6px;">Inventory analysis and reconciliation</li>
+      <li style="margin-bottom:6px;">Workflow optimization</li>
+      <li style="margin-bottom:6px;">Operational exception handling</li>
+    </ul>
+
+    <!-- ══ ENABLEMENT ══ -->
+    <h2 id="enablement">Sales enablement tracks</h2>
+    <p>Structured resources for pre-sales teams to demonstrate, explain, and position the Model Factory during customer engagements.</p>
+
+    <div class="enable-grid">
+      <div class="enable-card">
+        <div class="track">Track 1</div>
+        <h4>Capability Walkthrough</h4>
+        <p>Slides walking through core capabilities for business and technical audiences.</p>
+        <ul>
+          <li>What the Model Factory is and why it matters</li>
+          <li>Architecture overview (5 components)</li>
+          <li>Generic AI vs Operational AI positioning</li>
+          <li>Levels of autonomy progression</li>
+          <li>First agent use case demo flow</li>
+        </ul>
+      </div>
+      <div class="enable-card">
+        <div class="track">Track 2</div>
+        <h4>Functionality Deep Dive</h4>
+        <p>Detailed functionality, configuration guidance, and targeted business use cases.</p>
+        <ul>
+          <li>Operational Agent capabilities and tool use</li>
+          <li>Cognitive Gym simulation environment</li>
+          <li>Evaluation and benchmarking pipelines</li>
+          <li>Continuous learning and feedback loops</li>
+          <li>Enterprise API integration patterns</li>
+        </ul>
+      </div>
+      <div class="enable-card">
+        <div class="track">Track 3</div>
+        <h4>Demo Access</h4>
+        <p>Working demonstrations in demo environments with pre-configured data.</p>
+        <ul>
+          <li>Demo environment access and credentials</li>
+          <li>Pre-configured scenarios to walk through</li>
+          <li>Step-by-step guide for driving example executions</li>
+          <li>Data ingestion setup and sample datasets</li>
+        </ul>
+        <div class="note">Demo environment details TBD by team.</div>
+      </div>
+      <div class="enable-card">
+        <div class="track">Track 4</div>
+        <h4>Limitations &amp; Roadmap</h4>
+        <p>Known limitations, pitfalls, and future directions.</p>
+        <ul>
+          <li><strong>Current scope:</strong> WMS-centric warehouse operations</li>
+          <li><strong>Data dependency:</strong> Quality impacts agent performance</li>
+          <li><strong>Human oversight:</strong> Agents augment, not replace</li>
+          <li><strong>Future:</strong> World models, autonomy labs, expanded domains</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ══ FAQ ══ -->
+    <h2 id="faq">Questions &amp; Answers</h2>
+
+    <div class="faq-pills">
+      <button class="faq-pill active" data-group="fundamentals">Fundamentals <span class="n">3</span></button>
+      <button class="faq-pill" data-group="technical">Technical Approach <span class="n">5</span></button>
+      <button class="faq-pill" data-group="data">Data &amp; Privacy <span class="n">3</span></button>
+      <button class="faq-pill" data-group="human">Human Expertise <span class="n">3</span></button>
+      <button class="faq-pill" data-group="eval">Evaluation &amp; Safety <span class="n">3</span></button>
+      <button class="faq-pill" data-group="strategic">Strategic Positioning <span class="n">3</span></button>
+    </div>
+
+    <!-- FUNDAMENTALS -->
+    <div class="faq-group active" data-group="fundamentals">
+      <div class="faq-group-label">Fundamentals</div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q1</span>What exactly is a "Model Factory"?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>A repeatable system for building, evaluating, improving, and deploying AI capabilities at scale. It includes continuous data ingestion, simulation and trajectory generation, evaluation and benchmarking, fine-tuning and reinforcement learning, and operational deployment and monitoring. The goal is not one-off models, but a scalable capability production system.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q2</span>Why does supply chain need specialized AI models?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>General-purpose models are strong at language understanding, but supply chain operations require:</p>
+          <ul>
+            <li>Deep operational context</li>
+            <li>Structured reasoning</li>
+            <li>Workflow execution</li>
+            <li>Tool orchestration</li>
+            <li>Consistent auditable decision-making</li>
+          </ul>
+          <p>We specialize models for warehouse and supply chain execution to improve correctness, reliability, and business value.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q3</span>How is this different from simple RAG or chatbot systems?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>RAG retrieves information from documents. Our approach goes further with operational reasoning, multi-step planning, tool execution, workflow automation, learning from operational trajectories, and continuous improvement through evaluation loops. We are building operational agents, not document chatbots.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- TECHNICAL APPROACH -->
+    <div class="faq-group" data-group="technical">
+      <div class="faq-group-label">Technical Approach</div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q4</span>How exactly do you train your models?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>We use a layered training approach: frontier foundation models as base intelligence, domain adaptation using warehouse workflows, supervised fine-tuning (SFT), preference optimization (DPO), and reinforcement learning using simulation environments. Models continuously improve through evaluation feedback and operational learning loops.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q5</span>Are you training foundation models from scratch?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>No. We build on top of strong open-source foundation models and specialize them for supply chain and warehouse operations. This lets us leverage the massive investment already made in general-purpose intelligence while focusing on operational reasoning, workflow execution, and enterprise-specific capabilities.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q6</span>What role does reinforcement learning play?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Reinforcement learning helps the model improve decision-making through simulation. The "gym" environment allows running scenarios safely, testing many operational variations quickly, rewarding successful task execution, and improving agent behavior iteratively &mdash; all without impacting production systems.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q13</span>Can you explain the architecture in a few sentences?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>The architecture combines a simulation environment ("gym"), operational APIs and tool interfaces, data flywheel pipelines, evaluation harnesses, and fine-tuning/RL pipelines. Together, this creates a closed-loop learning system for warehouse operations.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q14</span>What is the purpose of the "gym"?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>The gym is a fast, safe simulation environment that mirrors warehouse operations. It enables rapid experimentation, trajectory generation, reinforcement learning, failure testing, and repeatable evaluations &mdash; all at scale, without impacting production systems.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- DATA & PRIVACY -->
+    <div class="faq-group" data-group="data">
+      <div class="faq-group-label">Data &amp; Privacy</div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q7</span>Where does the training data come from?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Our agentic Operator models train with 100% synthetic data. Sources include warehouse operational workflows, transactional patterns, simulation trajectories, SME-guided examples, and evaluation datasets. All customer data usage follows contractual permissions and governance controls.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q8</span>How do you handle privacy and customer data governance?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Governance is critical. Key controls include contractually permitted usage only, region-aware storage and processing, internal R&amp;D environments only, and controlled access and retention policies. We treat governance as a first-class concern, not an afterthought.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q9</span>How much synthetic vs. real data do you use?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Both serve different purposes. Real data provides operational realism, true workflow patterns, and real-world edge cases. Synthetic and simulated data helps expand coverage, generate rare scenarios, and scale training safely. The combination balances realism and scalability.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- HUMAN EXPERTISE -->
+    <div class="faq-group" data-group="human">
+      <div class="faq-group-label">Human Expertise</div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q10</span>How do you ingest expertise from SMEs?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>We capture expertise through workflow walkthroughs, operational demonstrations, meeting transcripts, human feedback loops, evaluation reviews, and trajectory correction. The goal is to convert tacit operational knowledge into reusable training and evaluation signals.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q11</span>How do you capture tacit operational knowledge?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>A large part of warehouse expertise is undocumented. We learn it by observing operational decisions, comparing successful vs. unsuccessful workflows, capturing repeated expert patterns, and feeding corrections back into the flywheel. Over time, the system accumulates operational knowledge and decision patterns.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q12</span>What role do human operators still play?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Human expertise remains essential. SMEs provide workflow understanding, evaluation feedback, exception handling, operational policy guidance, and validation of model behavior. The goal is augmentation and scalability of expertise, not removal of human oversight.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- EVALUATION & SAFETY -->
+    <div class="faq-group" data-group="eval">
+      <div class="faq-group-label">Evaluation &amp; Safety</div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q15</span>How do you evaluate success?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>We evaluate across multiple dimensions: operational correctness, scenario completion, tool-use accuracy, consistency, latency, human evaluation, and benchmark and regression suites. The focus is operational reliability, not just conversational quality.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q16</span>How do you avoid overfitting to one warehouse or customer?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Generalization is a key design principle. We address this through diverse operational patterns, simulation variability, cross-environment evaluation, and synthetic scenario expansion. The goal is reusable operational intelligence, not customer-specific memorization.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q19</span>What happens when the model is wrong?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Enterprise AI systems require guardrails and controlled autonomy. Key mechanisms include scoped permissions, human escalation paths, confidence thresholds, auditability, evaluation gates, and safe fallback behavior. The system is designed to operate safely within defined boundaries.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- STRATEGIC POSITIONING -->
+    <div class="faq-group" data-group="strategic">
+      <div class="faq-group-label">Strategic Positioning</div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q17</span>What makes Blue Yonder uniquely positioned for this?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Blue Yonder combines deep supply chain expertise, a large operational customer footprint, real execution system integration, historical operational data, and existing workflow understanding. This creates a strong foundation for operational AI systems.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q18</span>What is the long-term moat?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>The moat is not prompts or a single model. It comes from the operational data flywheel, domain expertise, evaluation infrastructure, workflow integrations, simulation environments, and continuous learning systems. This creates compounding advantages over time.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q20</span>Why not just use OpenAI directly?<span class="chev">&#9660;</span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>Frontier models provide strong general intelligence. Our differentiation comes from operational context, workflow orchestration, domain specialization, tool integrations, evaluation infrastructure, and continuous operational learning. The value is in the system and flywheel around the model.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="site-footer">
+      <img src="https://edge.sitecorecloud.io/blueyonderie8e6-corporateefb0-prod6ccb-be06/media/project/blueyonder/shared/default-images/logo-blue.png" alt="Blue Yonder">
+      <span>Model Training Factory &mdash; ICON 2026 Sales Enablement</span>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ── tabs ── */
+document.querySelectorAll("[data-tabs]").forEach(box => {
+  const btns = box.querySelectorAll(".tabbar button");
+  const panes = box.querySelectorAll(".tab-content");
+  btns.forEach(b => b.addEventListener("click", () => {
+    btns.forEach(x => x.classList.remove("on"));
+    panes.forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    panes[+b.dataset.t].classList.add("on");
+  }));
+});
+
+/* ── FAQ pills ── */
+document.querySelectorAll(".faq-pill").forEach(pill => {
+  pill.addEventListener("click", () => {
+    document.querySelectorAll(".faq-pill").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".faq-group").forEach(g => g.classList.remove("active"));
+    pill.classList.add("active");
+    document.querySelector('.faq-group[data-group="' + pill.dataset.group + '"]').classList.add("active");
+  });
+});
+
+/* ── FAQ accordion ── */
+document.querySelectorAll(".faq-q").forEach(q => {
+  q.addEventListener("click", () => {
+    const item = q.closest(".faq-item");
+    const wasOpen = item.classList.contains("open");
+    item.parentElement.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
+    if (!wasOpen) item.classList.add("open");
+  });
+});
+
+/* ── nav active state ── */
+(function(){
+  const sections = document.querySelectorAll("h2[id]");
+  const links = document.querySelectorAll("nav a");
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        links.forEach(a => {
+          a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+        });
+      }
+    });
+  }, { rootMargin: "-60px 0px -70% 0px" });
+  sections.forEach(s => obs.observe(s));
+})();
+</script>
+</body>
+</html>
