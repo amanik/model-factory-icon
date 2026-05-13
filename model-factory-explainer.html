@@ -510,14 +510,14 @@
           .pipe-arrow { stroke: #d1d5db; stroke-width: 1.5; fill: none; marker-end: url(#pipe-head-e); }
           .pipe-output-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #2a4f9e; }
           @keyframes dashFlowE { to { stroke-dashoffset: -24; } }
-          .feedback-path-e { stroke: #3660bd; stroke-width: 1.5; fill: none; stroke-dasharray: 4,4; animation: dashFlowE 1.2s linear infinite; }
+          .feedback-path-e { stroke: #3660bd; stroke-width: 1.2; fill: none; stroke-dasharray: 3,3; animation: dashFlowE 1.2s linear infinite; }
         </style>
         <defs>
           <marker id="pipe-head-e" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
             <path d="M0,0 L8,3 L0,6" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
           </marker>
-          <marker id="pipe-loop-e" markerWidth="6" markerHeight="5" refX="1" refY="2.5" orient="auto">
-            <path d="M6,0 L0,2.5 L6,5" fill="none" stroke="#3660bd" stroke-width="1.5"/>
+          <marker id="pipe-loop-e" markerWidth="5" markerHeight="4" refX="1" refY="2" orient="auto">
+            <path d="M5,0 L0,2 L5,4" fill="none" stroke="#3660bd" stroke-width="1.2"/>
           </marker>
         </defs>
         <!-- INPUTS -->
@@ -542,7 +542,7 @@
         <rect x="432" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
         <text x="486" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Evaluation</text>
         <!-- animated feedback loop -->
-        <path class="feedback-path-e" d="M540,132 C558,132 562,120 562,100 C562,80 558,68 540,68" marker-end="url(#pipe-loop-e)"/>
+        <path class="feedback-path-e" d="M541,131 Q575,100 541,69" marker-end="url(#pipe-loop-e)"/>
         <text x="420" y="156" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#3660bd; font-style:italic;">continuous improvement</text>
         <!-- Arrow 2 -->
         <line x1="570" y1="100" x2="630" y2="100" class="pipe-arrow"/>

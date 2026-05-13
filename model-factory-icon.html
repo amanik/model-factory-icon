@@ -101,11 +101,8 @@ button { font-family: var(--sans); cursor: pointer; }
   border-radius: var(--r-pill);
   border: 1.5px solid rgba(54,96,189,0.15);
 }
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 48px;
-  align-items: center;
+.hero-text {
+  max-width: 640px;
 }
 .eyebrow {
   font-size: 11px;
@@ -143,57 +140,20 @@ button { font-family: var(--sans); cursor: pointer; }
   max-width: 540px;
 }
 
-/* Hero pipeline diagram */
-.factory-flow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  padding: 8px 0;
+/* Hero wave animation */
+.hero-wave {
+  margin-top: 36px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(54, 96, 189, 0.018);
 }
-.factory-flow .stage {
-  width: 220px;
-  padding: 11px 16px;
-  text-align: center;
-  background: var(--byx-card);
-  border: 1.5px solid var(--byx-200);
-  border-radius: var(--r4);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--byx-800);
-  position: relative;
-  z-index: 1;
+.hero-wave canvas {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-/* .primary stage class removed — all stages uniform */
-.factory-flow .connector {
-  width: 2px;
-  height: 16px;
-  background: var(--byx-indigo);
-  position: relative;
-}
-.factory-flow .connector::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0; height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid var(--byx-indigo);
-}
-.feedback-label {
-  position: absolute;
-  right: -24px;
-  top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--byx-400);
-  white-space: nowrap;
-}
+
+/* (factory-flow removed — hero uses wave animation instead) */
 .feedback-line {
   position: absolute;
   right: -16px;
@@ -364,6 +324,20 @@ section:last-of-type { border-bottom: none; }
   border-color: rgba(54,96,189,0.2);
 }
 .compare-operational li { color: var(--byx-800); }
+
+/* ═══════════════════════════════════════════════
+   PIPELINE DIAGRAM (Section 01)
+   ═══════════════════════════════════════════════ */
+.pipeline-diagram {
+  margin: 32px 0;
+  overflow-x: auto;
+}
+.pipeline-diagram svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
 
 /* ═══════════════════════════════════════════════
    PROCESS STEPS (Section 03)
@@ -610,6 +584,34 @@ section:last-of-type { border-bottom: none; }
   margin-bottom: 16px;
 }
 .usecase-card p { font-size: 14px; margin-bottom: 12px; }
+
+/* ── NEXT STEPS ── */
+.next-steps {
+  display: flex;
+  gap: 16px;
+  margin: 0 0 16px;
+}
+.next-step-card {
+  flex: 1;
+  padding: 20px 24px;
+  background: var(--byx-indigo-bg);
+  border: 1.5px solid rgba(54,96,189,0.2);
+  border-radius: var(--r-card);
+}
+.next-step-card h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--byx-indigo-d);
+  margin-bottom: 6px;
+}
+.next-step-card p {
+  font-size: 13.5px;
+  color: var(--byx-600);
+  line-height: 1.6;
+  margin: 0;
+}
+@media (max-width: 700px) { .next-steps { flex-direction: column; } }
+
 .agent-flow {
   display: flex;
   align-items: center;
@@ -626,11 +628,6 @@ section:last-of-type { border-bottom: none; }
   font-weight: 600;
   color: var(--byx-700);
   white-space: nowrap;
-}
-.agent-flow .af-step.highlight {
-  background: var(--byx-indigo);
-  color: #fff;
-  border-color: var(--byx-indigo);
 }
 .agent-flow .af-arrow {
   font-size: 14px;
@@ -777,18 +774,53 @@ body.slide-mode .toc { display: none; }
 body.slide-mode .slide-toggle { display: none; }
 body.slide-mode .slide-counter { display: block; }
 body.slide-mode .wrap { max-width: 100%; padding: 0; }
-body.slide-mode section,
-body.slide-mode .masthead {
-  min-height: 100vh;
-  display: flex;
+body.slide-mode .site-footer { display: none; }
+
+/* In slide mode, everything hidden by default */
+body.slide-mode .masthead { display: none; border-bottom: none; }
+body.slide-mode section { display: none; border-bottom: none; padding: 0; }
+body.slide-mode .pslide { display: none; }
+
+/* Active slide container — full viewport */
+.slide-active {
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
+  min-height: 100vh;
   padding: 60px 80px;
-  border-bottom: none;
 }
-body.slide-mode section:not(.active-slide),
-body.slide-mode .masthead:not(.active-slide) { display: none; }
-body.slide-mode .site-footer { display: none; }
+/* Parent section of an active pslide — visible but unstyled */
+.slide-parent {
+  display: block !important;
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+
+/* Q&A presentation mode — expand answers, larger text */
+.qa-presentation .qa-tabs { display: none; }
+.qa-presentation .sec-head .count { display: none; }
+.qa-presentation .qa-panel { display: none !important; }
+.qa-presentation .qa-panel.active { display: block !important; }
+.qa-presentation .qa-group-label {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--byx-indigo);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--byx-200);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.qa-presentation .qa-item { border-bottom: none; margin-bottom: 8px; }
+.qa-presentation .qa-question { font-size: 17px; font-weight: 600; cursor: default; }
+.qa-presentation .qa-chevron { display: none; }
+.qa-presentation .qa-answer {
+  max-height: none !important;
+  overflow: visible !important;
+  padding: 0 0 12px 40px !important;
+}
+.qa-presentation .qa-answer p { font-size: 15px; line-height: 1.65; color: var(--byx-600); }
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
@@ -797,13 +829,13 @@ body.slide-mode .site-footer { display: none; }
   .capability-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 880px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
-  .factory-flow { max-width: 260px; margin: 0 auto; }
+  .hero-text { max-width: 100%; }
   .compare-grid { grid-template-columns: 1fr; }
   .qa-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
   .masthead h1 { font-size: 32px; }
 }
 @media (max-width: 640px) {
+  .hero-wave { margin-top: 24px; border-radius: 12px; }
   .wrap { padding: 0 20px 80px; }
   .masthead { padding: 28px 0 36px; }
   .masthead h1 { font-size: 26px; }
@@ -849,6 +881,7 @@ body.slide-mode .site-footer { display: none; }
   body { font-size: 13px; }
   .masthead h1 { font-size: 32px; }
   .sec-head h2 { font-size: 22px; }
+  .hero-wave { display: none; }
 }
 </style>
 </head>
@@ -864,25 +897,13 @@ body.slide-mode .site-footer { display: none; }
     <img src="https://edge.sitecorecloud.io/blueyonderie8e6-corporateefb0-prod6ccb-be06/media/project/blueyonder/shared/default-images/logo-blue.png" alt="Blue Yonder" class="by-logo" width="140" height="32">
     <span class="conf-badge">ICON 2026</span>
   </div>
-  <div class="hero-grid">
-    <div>
-      <p data-section="hero" data-sub="eyebrow" class="eyebrow"></p>
-      <h1 data-section="hero" data-sub="heading"></h1>
-      <p data-section="hero" data-sub="intro" class="intro"></p>
-    </div>
-    <div class="factory-flow">
-      <div class="stage" data-stage="1"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="2"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="3"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="4"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="5"></div>
-      <div class="feedback-line"></div>
-      <span class="feedback-label" data-stage="feedback"></span>
-    </div>
+  <div class="hero-text">
+    <p data-section="hero" data-sub="eyebrow" class="eyebrow"></p>
+    <h1 data-section="hero" data-sub="heading"></h1>
+    <p data-section="hero" data-sub="intro" class="intro"></p>
+  </div>
+  <div class="hero-wave">
+    <canvas id="hero-waves" width="1920" height="420"></canvas>
   </div>
 </header>
 
@@ -892,33 +913,93 @@ body.slide-mode .site-footer { display: none; }
 <nav class="toc" id="toc">
   <a href="#what-we-build">What We Are Building</a>
   <a href="#why-not-generic">Why Generic AI Fails</a>
-  <a href="#model-factory-process">What the Model Factory Does <span class="n">5</span></a>
+  <a href="#model-factory-process">How It Builds a Model <span class="n">5</span></a>
   <a href="#allocation-shorts">Allocation Shorts</a>
-  <a href="#qa">Q&amp;A <span class="n">24</span></a>
+  <a href="#qa">Q&amp;A <span class="n">22</span></a>
 </nav>
 
 <!-- ═══════════════════════════════════════════
      SECTION 01: WHAT WE ARE BUILDING
      ═══════════════════════════════════════════ -->
 <section id="what-we-build">
-  <div class="sec-head">
-    <span class="idx">01</span>
-    <h2>What We Are Building</h2>
+  <div class="pslide">
+    <div class="sec-head">
+      <span class="idx">01</span>
+      <h2>What We Are Building</h2>
+    </div>
+    <p data-section="section-01" data-sub="intro" class="sec-intro"></p>
+
+    <div class="pipeline-diagram">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 200" fill="none">
+        <style>
+          .pipe-label { font-family: 'Inter', system-ui, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; fill: #9ca3af; }
+          .pipe-box-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 500; fill: #374151; }
+          .pipe-arrow { stroke: #d1d5db; stroke-width: 1.5; fill: none; marker-end: url(#pipe-head); }
+          .pipe-output-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #2a4f9e; }
+          @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+          .feedback-path { stroke: #3660bd; stroke-width: 1.2; fill: none; stroke-dasharray: 3,3; animation: dashFlow 1.2s linear infinite; }
+        </style>
+        <defs>
+          <marker id="pipe-head" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
+          </marker>
+          <marker id="pipe-loop" markerWidth="5" markerHeight="4" refX="1" refY="2" orient="auto">
+            <path d="M5,0 L0,2 L5,4" fill="none" stroke="#3660bd" stroke-width="1.2"/>
+          </marker>
+        </defs>
+
+        <!-- INPUTS -->
+        <text x="105" y="22" text-anchor="middle" class="pipe-label">Inputs</text>
+        <rect x="10" y="36" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+        <text x="105" y="59" text-anchor="middle" class="pipe-box-text">SME Knowledge</text>
+        <rect x="10" y="82" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+        <text x="105" y="105" text-anchor="middle" class="pipe-box-text">Use Cases</text>
+        <rect x="10" y="128" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+        <text x="105" y="151" text-anchor="middle" class="pipe-box-text">Success Criteria</text>
+
+        <!-- Arrow 1 -->
+        <line x1="210" y1="100" x2="270" y2="100" class="pipe-arrow"/>
+
+        <!-- PROCESS -->
+        <text x="420" y="22" text-anchor="middle" class="pipe-label">Training Pipeline</text>
+        <rect x="280" y="36" width="280" height="128" rx="12" fill="rgba(54,96,189,0.06)" stroke="#3660bd" stroke-width="1.5"/>
+        <rect x="300" y="56" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="354" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Fine-tuning</text>
+        <rect x="300" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="354" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Pref. Alignment</text>
+        <rect x="432" y="56" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="486" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">RL / Simulation</text>
+        <rect x="432" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="486" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Evaluation</text>
+        <!-- animated feedback loop -->
+        <path class="feedback-path" d="M541,131 Q575,100 541,69" marker-end="url(#pipe-loop)"/>
+        <text x="420" y="156" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#3660bd; font-style:italic;">continuous improvement</text>
+
+        <!-- Arrow 2 -->
+        <line x1="570" y1="100" x2="630" y2="100" class="pipe-arrow"/>
+
+        <!-- OUTPUT -->
+        <text x="735" y="22" text-anchor="middle" class="pipe-label">Output</text>
+        <rect x="640" y="54" width="190" height="92" rx="12" fill="rgba(54,96,189,0.06)" stroke="#3660bd" stroke-width="2"/>
+        <text x="735" y="92" text-anchor="middle" class="pipe-output-text">Specialized</text>
+        <text x="735" y="110" text-anchor="middle" class="pipe-output-text">SC Model</text>
+        <text x="735" y="134" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#6b7280; font-style:italic;">for agents &amp; workflows</text>
+      </svg>
+    </div>
+
+    <div class="content-block">
+      <div data-section="section-01" data-sub="agent-capabilities"></div>
+      <div data-section="section-01" data-sub="callout" class="callout"></div>
+      <div data-section="section-01" data-sub="how-does-the-model-training-process-work"></div>
+    </div>
   </div>
-  <p data-section="section-01" data-sub="intro" class="sec-intro"></p>
 
-  <div class="content-block">
-    <div data-section="section-01" data-sub="agent-capabilities"></div>
-
-    <div data-section="section-01" data-sub="callout" class="callout"></div>
-
-    <div data-section="section-01" data-sub="how-does-the-model-training-process-work"></div>
-  </div>
-
-  <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Model Architecture</h3>
-  <p class="arch-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
-  <div class="arch-diagram" data-section="section-01" data-sub="model-architecture">
-    <!-- 3 architecture patterns rendered by JS -->
+  <div class="pslide">
+    <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Model Architecture</h3>
+    <p class="arch-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
+    <div class="arch-diagram" data-section="section-01" data-sub="model-architecture">
+      <!-- 3 architecture patterns rendered by JS -->
+    </div>
   </div>
 </section>
 
@@ -926,41 +1007,47 @@ body.slide-mode .site-footer { display: none; }
      SECTION 02: WHY GENERIC AI FAILS
      ═══════════════════════════════════════════ -->
 <section id="why-not-generic">
-  <div class="sec-head">
-    <span class="idx">02</span>
-    <h2>Why Generic AI Is Not Enough</h2>
-  </div>
-  <p data-section="section-02" data-sub="intro" class="sec-intro"></p>
+  <div class="pslide">
+    <div class="sec-head">
+      <span class="idx">02</span>
+      <h2>Why Generic AI Is Not Enough</h2>
+    </div>
+    <p data-section="section-02" data-sub="intro" class="sec-intro"></p>
 
-  <div data-section="section-02" data-sub="comparison-table" class="compare-grid"></div>
+    <div data-section="section-02" data-sub="comparison-table" class="compare-grid"></div>
 
-  <div class="content-block">
-    <div data-section="section-02" data-sub="callout" class="callout"></div>
-  </div>
-
-  <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Where Frontier Models Fail</h3>
-  <p class="failure-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
-  <div class="failure-tabs" data-section="section-02" data-sub="where-frontier-models-fail">
-    <!-- Tabbed failure modes rendered by JS -->
+    <div class="content-block">
+      <div data-section="section-02" data-sub="callout" class="callout"></div>
+    </div>
   </div>
 
-  <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">What Domain Fine-tuning Actually Means</h3>
-  <div data-section="section-02" data-sub="what-domain-fine-tuning-actually-means" class="content-block" style="margin-bottom:24px;"></div>
-
-  <div class="capability-grid" data-section="section-02" data-sub="key-capabilities-of-a-domain-fine-tuned-model">
-    <!-- 5 capability cards rendered by JS -->
+  <div class="pslide">
+    <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Where Frontier Models Fail</h3>
+    <p class="failure-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
+    <div class="failure-tabs" data-section="section-02" data-sub="where-frontier-models-fail">
+      <!-- Tabbed failure modes rendered by JS -->
+    </div>
   </div>
 
-  <div data-section="section-02" data-sub="domain-fine-tuning-callout" class="callout"></div>
+  <div class="pslide">
+    <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Domain Fine-tuning to Address Failure Modes</h3>
+    <div data-section="section-02" data-sub="domain-fine-tuning-to-address-failure-modes" class="content-block" style="margin-bottom:24px;"></div>
+
+    <div class="capability-grid" data-section="section-02" data-sub="key-capabilities-of-a-domain-fine-tuned-model">
+      <!-- 5 capability cards rendered by JS -->
+    </div>
+
+    <div data-section="section-02" data-sub="domain-fine-tuning-callout" class="callout"></div>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════
-     SECTION 03: WHAT THE MODEL FACTORY DOES
+     SECTION 03: HOW THE MODEL FACTORY BUILDS A SPECIALIZED SC MODEL
      ═══════════════════════════════════════════ -->
 <section id="model-factory-process">
   <div class="sec-head">
     <span class="idx">03</span>
-    <h2>What the Model Factory Does</h2>
+    <h2>How the Model Factory Builds a Specialized SC Model</h2>
     <span class="count">5 steps</span>
   </div>
   <p data-section="section-03" data-sub="intro" class="sec-intro"></p>
@@ -993,29 +1080,38 @@ body.slide-mode .site-footer { display: none; }
      SECTION 04: ALLOCATION SHORTS AGENT
      ═══════════════════════════════════════════ -->
 <section id="allocation-shorts">
-  <div class="sec-head">
-    <span class="idx">04</span>
-    <h2>Allocation Shorts Agent</h2>
+  <div class="pslide">
+    <div class="sec-head">
+      <span class="idx">04</span>
+      <h2>First Agent — Allocation Shorts</h2>
+    </div>
+    <p data-section="section-04" data-sub="intro" class="sec-intro"></p>
+
+    <div class="usecase-card">
+      <span class="tag" data-section="section-04" data-sub="tag"></span>
+      <div data-section="section-04" data-sub="what-the-agent-does"></div>
+
+      <div style="margin:24px 0; border-radius:var(--r-card); overflow:hidden; border:1px solid var(--byx-200); box-shadow:var(--shadow-3);">
+        <img src="allocation-preview.png" alt="Allocation Shorts Agent — chat conversation showing thinking traces, sortable data tables, and filter chips" style="width:100%; display:block;">
+        <div data-section="section-04" data-sub="image-caption" style="padding:10px 16px; background:var(--byx-card-alt); font-size:12px; color:var(--byx-500); border-top:1px solid var(--byx-200);"></div>
+      </div>
+
+      <h3 style="font-size:15px; margin-top:24px;">Agent Workflow</h3>
+      <div class="agent-flow" data-section="section-04" data-sub="agent-workflow">
+        <!-- workflow steps injected dynamically -->
+      </div>
+
+      <h3 style="font-size:15px; margin-top:24px;">Additional Use Cases</h3>
+      <ul data-section="section-04" data-sub="additional-use-cases" style="margin-left:16px; list-style:disc;">
+      </ul>
+    </div>
   </div>
-  <p data-section="section-04" data-sub="intro" class="sec-intro"></p>
 
-  <div class="usecase-card">
-    <span class="tag" data-section="section-04" data-sub="tag"></span>
-    <div data-section="section-04" data-sub="what-the-agent-does"></div>
-
-    <div style="margin:24px 0; border-radius:var(--r-card); overflow:hidden; border:1px solid var(--byx-200); box-shadow:var(--shadow-3);">
-      <img src="allocation-preview.png" alt="Allocation Shorts Agent — chat conversation showing thinking traces, sortable data tables, and filter chips" style="width:100%; display:block;">
-      <div data-section="section-04" data-sub="image-caption" style="padding:10px 16px; background:var(--byx-card-alt); font-size:12px; color:var(--byx-500); border-top:1px solid var(--byx-200);"></div>
+  <div class="pslide">
+    <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 12px;">Next Steps</h3>
+    <div class="next-steps" data-section="section-04" data-sub="next-steps">
+      <!-- rendered by JS -->
     </div>
-
-    <h3 style="font-size:15px; margin-top:24px;">Agent Workflow</h3>
-    <div class="agent-flow" data-section="section-04" data-sub="agent-workflow">
-      <!-- workflow steps injected dynamically -->
-    </div>
-
-    <h3 style="font-size:15px; margin-top:24px;">Additional Use Cases</h3>
-    <ul data-section="section-04" data-sub="additional-use-cases" style="margin-left:16px; list-style:disc;">
-    </ul>
   </div>
 </section>
 
@@ -1026,7 +1122,7 @@ body.slide-mode .site-footer { display: none; }
   <div class="sec-head">
     <span class="idx">05</span>
     <h2>Questions &amp; Answers</h2>
-    <span class="count">24 questions</span>
+    <span class="count">22 questions</span>
   </div>
 
   <div class="qa-tabs" role="tablist">
@@ -1052,6 +1148,67 @@ body.slide-mode .site-footer { display: none; }
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+/* ═══════════════════════════════════════════════
+   HERO WAVE ANIMATION
+   ═══════════════════════════════════════════════ */
+(function() {
+  var canvas = document.getElementById('hero-waves');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width;
+  var H = canvas.height;
+  var t = 0;
+
+  var ribbons = [
+    { color:{r:54,g:96,b:189}, lines:16, tiltStart:H*0.88, tiltEnd:H*0.05,
+      amplitude:90, frequency:0.003, speed:0.015, lineSpacing:4.0,
+      phaseSpread:0.07, opacity:0.6, lineWidth:1.6 },
+    { color:{r:90,g:145,b:225}, lines:14, tiltStart:H*0.02, tiltEnd:H*0.85,
+      amplitude:78, frequency:0.0026, speed:-0.012, lineSpacing:3.8,
+      phaseSpread:0.09, opacity:0.50, lineWidth:1.5 },
+    { color:{r:35,g:60,b:130}, lines:11, tiltStart:H*0.60, tiltEnd:H*0.40,
+      amplitude:58, frequency:0.002, speed:0.009, lineSpacing:3.2,
+      phaseSpread:0.11, opacity:0.30, lineWidth:1.3 }
+  ];
+
+  function drawLine(r, i, time) {
+    var phase = i * r.phaseSpread;
+    var off = (i - r.lines / 2) * r.lineSpacing;
+    ctx.beginPath();
+    for (var x = -10; x <= W + 10; x += 3) {
+      var p = x / W; var ep = p * p * (3 - 2 * p);
+      var by = r.tiltStart + (r.tiltEnd - r.tiltStart) * ep + off;
+      var w1 = Math.sin(x * r.frequency + time * r.speed + phase) * r.amplitude;
+      var w2 = Math.sin(x * r.frequency * 2.1 + time * r.speed * 0.5 + phase * 1.6) * (r.amplitude * 0.2);
+      var w3 = Math.sin(x * r.frequency * 0.4 + time * r.speed * 0.18 + phase * 0.5) * (r.amplitude * 0.15);
+      var y = by + w1 + w2 + w3;
+      if (x === -10) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    var center = r.lines / 2;
+    var dist = Math.abs(i - center) / center;
+    var alpha = r.opacity * (1 - dist * 0.6);
+    if (alpha < 0.06) alpha = 0.06;
+    ctx.strokeStyle = 'rgba(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ',' + alpha.toFixed(3) + ')';
+    ctx.lineWidth = r.lineWidth;
+    ctx.stroke();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    var grad = ctx.createRadialGradient(W*0.48, H*0.48, 0, W*0.48, H*0.48, W*0.42);
+    grad.addColorStop(0, 'rgba(54,96,189,0.04)');
+    grad.addColorStop(1, 'rgba(54,96,189,0.0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+    for (var ri = 0; ri < ribbons.length; ri++) {
+      for (var i = 0; i < ribbons[ri].lines; i++) drawLine(ribbons[ri], i, t);
+    }
+    t += 1;
+    requestAnimationFrame(render);
+  }
+  render();
+})();
+
 /* ═══════════════════════════════════════════════
    CONTENT LOADER — fetches content.md and injects
    ═══════════════════════════════════════════════ */
@@ -1136,6 +1293,7 @@ function injectContent(sections) {
     if (el.classList.contains('capability-grid')) return;
     if (el.classList.contains('failure-tabs')) return;
     if (el.classList.contains('arch-diagram')) return;
+    if (el.classList.contains('next-steps')) return;
     if (el.classList.contains('agent-flow')) return;
 
     // Process step details: inject into .step-body
@@ -1207,35 +1365,6 @@ function injectContent(sections) {
 }
 
 // ----- 3. Special renderers -----
-
-function renderHeroFlow(sections) {
-  var hero = sections['hero'];
-  if (!hero || !hero['factory-flow-diagram-pipeline-stages']) return;
-
-  var text = hero['factory-flow-diagram-pipeline-stages'];
-  var lines = text.split('\n');
-  var stages = [];
-  var feedbackLabel = '';
-
-  lines.forEach(function(line) {
-    var numberedMatch = line.match(/^\d+\.\s+(.+)/);
-    if (numberedMatch) {
-      stages.push(numberedMatch[1].trim());
-    }
-    var feedbackMatch = line.match(/^-\s+Feedback loop label:\s*(.+)/);
-    if (feedbackMatch) {
-      feedbackLabel = feedbackMatch[1].trim();
-    }
-  });
-
-  stages.forEach(function(label, i) {
-    var el = document.querySelector('[data-stage="' + (i + 1) + '"]');
-    if (el) el.textContent = label;
-  });
-
-  var feedbackEl = document.querySelector('[data-stage="feedback"]');
-  if (feedbackEl && feedbackLabel) feedbackEl.textContent = feedbackLabel;
-}
 
 function renderComparisonTable(section) {
   if (!section) return;
@@ -1435,7 +1564,7 @@ function renderArchDiagram(sections) {
   // Define node layouts for each architecture
   var diagrams = [
     { nodes: ['Frontier Model', '→', 'Specialized SC Model'], classes: ['frontier', '', 'specialized'] },
-    { nodes: ['Frontier Model', '→', 'SC Sub-Agent', '→', 'Enterprise APIs'], classes: ['frontier', '', 'specialized', '', 'specialized'] },
+    { nodes: ['Frontier Model', '→', 'SC Sub-Agent'], classes: ['frontier', '', 'specialized'] },
     { nodes: ['Foundational Supply Chain Model'], classes: ['foundational'] }
   ];
 
@@ -1455,6 +1584,46 @@ function renderArchDiagram(sections) {
     html += '</div>';
     html += '<div class="arch-desc">' + arch.desc + '</div>';
     html += '</div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function renderNextSteps(sections) {
+  var section = sections['section-04'];
+  if (!section) return;
+  var key = Object.keys(section).find(function(k) {
+    return k.indexOf('next-steps') !== -1;
+  });
+  if (!key) return;
+
+  var text = section[key];
+  var container = document.querySelector('.next-steps[data-section="section-04"]');
+  if (!container) return;
+
+  var cards = [];
+  var currentTitle = '';
+  var currentDesc = [];
+
+  text.split('\n').forEach(function(line) {
+    var boldMatch = line.match(/^\*\*(.+?)\*\*\s*$/);
+    if (boldMatch) {
+      if (currentTitle) {
+        cards.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+      }
+      currentTitle = boldMatch[1];
+      currentDesc = [];
+    } else if (currentTitle && line.trim().length > 0) {
+      currentDesc.push(line.trim());
+    }
+  });
+  if (currentTitle) {
+    cards.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+  }
+
+  var html = '';
+  cards.forEach(function(card) {
+    html += '<div class="next-step-card"><h4>' + card.title + '</h4><p>' + card.desc + '</p></div>';
   });
 
   container.innerHTML = html;
@@ -1615,21 +1784,23 @@ function renderSection04Content(sections) {
 // ----- 4. Interactive JS initialization -----
 
 function initTOCObserver() {
-  var sections = document.querySelectorAll('section[id]');
+  var sections = Array.from(document.querySelectorAll('section[id]'));
   var tocLinks = document.querySelectorAll('.toc a');
   var map = {};
   tocLinks.forEach(function(a) { map[a.getAttribute('href').slice(1)] = a; });
 
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        tocLinks.forEach(function(a) { a.classList.remove('active'); });
-        if (map[entry.target.id]) map[entry.target.id].classList.add('active');
-      }
+  function updateActive() {
+    var scrollTop = window.scrollY + 140;
+    var current = null;
+    sections.forEach(function(s) {
+      if (s.offsetTop <= scrollTop) current = s.id;
     });
-  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+    tocLinks.forEach(function(a) { a.classList.remove('active'); });
+    if (current && map[current]) map[current].classList.add('active');
+  }
 
-  sections.forEach(function(s) { observer.observe(s); });
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
 }
 
 function initQATabs() {
@@ -1659,39 +1830,108 @@ function initPresentationMode() {
   var slideMode = false;
   var current = 0;
   var savedScroll = 0;
-  var slides = [document.querySelector('.masthead')].concat(
-    Array.from(document.querySelectorAll('section[id]'))
-  );
+  var slides = [];
   var counter = document.querySelector('.slide-counter');
   var toggle = document.querySelector('.slide-toggle');
 
-  function update() {
-    slides.forEach(function(s, i) {
-      s.classList.toggle('active-slide', i === current);
-      if (slideMode) s.style.display = (i === current) ? '' : 'none';
-      else s.style.display = '';
+  function buildSlides() {
+    slides = [];
+
+    // Masthead slide
+    slides.push({ el: document.querySelector('.masthead') });
+
+    // Iterate sections in document order
+    document.querySelectorAll('section[id]').forEach(function(section) {
+      var pslideEls = Array.from(section.children).filter(function(c) {
+        return c.classList.contains('pslide');
+      });
+
+      if (pslideEls.length > 0) {
+        // Section has pslides — each becomes its own slide
+        pslideEls.forEach(function(ps) {
+          slides.push({ el: ps, parent: section });
+        });
+      } else if (section.id === 'qa') {
+        // Q&A section — one slide per tab
+        var qaTabs = document.querySelectorAll('.qa-tab');
+        qaTabs.forEach(function(tab) {
+          slides.push({
+            el: section,
+            isQA: true,
+            onEnter: function() {
+              section.classList.add('qa-presentation');
+              document.querySelectorAll('.qa-tab').forEach(function(t) { t.classList.remove('active'); });
+              document.querySelectorAll('.qa-panel').forEach(function(p) { p.classList.remove('active'); });
+              tab.classList.add('active');
+              var panel = document.querySelector('.qa-panel[data-group="' + tab.dataset.group + '"]');
+              if (panel) {
+                panel.classList.add('active');
+                panel.querySelectorAll('.qa-item').forEach(function(item) { item.classList.add('open'); });
+              }
+            },
+            onExit: function() {
+              section.classList.remove('qa-presentation');
+              document.querySelectorAll('.qa-item').forEach(function(item) { item.classList.remove('open'); });
+            }
+          });
+        });
+      } else {
+        // Section without pslides — full section slide
+        slides.push({ el: section });
+      }
     });
+  }
+
+  function showSlide(idx) {
+    // Cleanup previous slide
+    if (slides[current] && slides[current].onExit) slides[current].onExit();
+
+    // Remove active classes from everything
+    document.querySelectorAll('.slide-active, .slide-parent').forEach(function(el) {
+      el.classList.remove('slide-active', 'slide-parent');
+    });
+
+    current = idx;
+    var slide = slides[current];
+
+    // Show the slide element
+    slide.el.classList.add('slide-active');
+
+    // If pslide inside a section, show the parent section too
+    if (slide.parent) {
+      slide.parent.classList.add('slide-parent');
+    }
+
+    // Run enter hook (Q&A tab activation etc.)
+    if (slide.onEnter) slide.onEnter();
+
     counter.textContent = (current + 1) + ' / ' + slides.length;
+    window.scrollTo(0, 0);
   }
 
   function enter() {
     savedScroll = window.scrollY;
     slideMode = true;
     document.body.classList.add('slide-mode');
-    current = 0;
-    update();
-    window.scrollTo(0, 0);
+    buildSlides();
+    showSlide(0);
   }
 
   function exit() {
+    if (slides[current] && slides[current].onExit) slides[current].onExit();
+    document.querySelectorAll('.slide-active, .slide-parent').forEach(function(el) {
+      el.classList.remove('slide-active', 'slide-parent');
+    });
     slideMode = false;
     document.body.classList.remove('slide-mode');
-    slides.forEach(function(s) { s.classList.remove('active-slide'); s.style.display = ''; });
+    document.querySelectorAll('.qa-presentation').forEach(function(el) {
+      el.classList.remove('qa-presentation');
+    });
     window.scrollTo(0, savedScroll);
   }
 
-  function next() { if (current < slides.length - 1) { current++; update(); window.scrollTo(0, 0); } }
-  function prev() { if (current > 0) { current--; update(); window.scrollTo(0, 0); } }
+  function next() { if (current < slides.length - 1) showSlide(current + 1); }
+  function prev() { if (current > 0) showSlide(current - 1); }
 
   toggle.addEventListener('click', function() { slideMode ? exit() : enter(); });
 
@@ -1719,7 +1959,7 @@ async function init() {
     injectContent(sections);
 
     // Special renderers
-    renderHeroFlow(sections);
+
     renderComparisonTable(sections['section-02']);
     renderCapabilityGrid(sections);
     renderFailureTabs(sections);
@@ -1727,6 +1967,7 @@ async function init() {
     renderSection04Content(sections);
     renderAgentWorkflow(sections);
     renderAdditionalUseCases(sections);
+    renderNextSteps(sections);
     renderQATabs(sections['section-05']);
 
     // Re-initialize interactive features after content injection
