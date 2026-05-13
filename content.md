@@ -209,9 +209,7 @@ When a warehouse cannot fully allocate inventory to outbound orders, operators m
 The Allocation Shorts Agent automates this investigation workflow end-to-end, combining reasoning about operational state with structured tool use across enterprise systems.
 
 ### Image Caption
-Agent conversation: structured investigation with tool calls, data tables, and operational recommendations
-
-<!-- explainer variant caption: "Agent resolves allocation shorts: identifies recoverable inventory, executes yard move, tracks fulfillment via Live Activity" -->
+Agent resolves allocation shorts: identifies recoverable inventory, executes yard move, tracks fulfillment via Live Activity
 
 ### Agent Workflow Steps
 1. User Request
