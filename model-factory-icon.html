@@ -450,6 +450,42 @@ section:last-of-type { border-bottom: none; }
   line-height: 1.6;
 }
 
+/* ── FAILURE MODE GRID ── */
+.failure-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0 36px;
+}
+.fail-card {
+  background: var(--byx-50);
+  border: 1.5px solid var(--byx-200);
+  border-radius: var(--r-card);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.fail-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--byx-400);
+  border-radius: 4px 0 0 4px;
+}
+.fail-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--byx-800);
+  margin-bottom: 6px;
+}
+.fail-card p {
+  font-size: 12.5px;
+  color: var(--byx-600);
+  line-height: 1.55;
+}
+
 /* Autonomy track and flywheel removed — content moved to Q&A */
 
 /* ═══════════════════════════════════════════════
@@ -668,6 +704,10 @@ body.slide-mode .site-footer { display: none; }
    ═══════════════════════════════════════════════ */
 @media (max-width: 1100px) {
   .capability-grid { grid-template-columns: 1fr; }
+  .failure-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  .failure-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 880px) {
   .hero-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -715,7 +755,7 @@ body.slide-mode .site-footer { display: none; }
   .qa-answer { max-height: none !important; padding-bottom: 12px !important; overflow: visible !important; }
   .qa-item { page-break-inside: avoid; }
   * { box-shadow: none !important; }
-  .usecase-card, .process-step, .cap-card { border: 1px solid var(--byx-200); }
+  .usecase-card, .process-step, .cap-card, .fail-card { border: 1px solid var(--byx-200); }
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   body { font-size: 13px; }
@@ -802,6 +842,12 @@ body.slide-mode .site-footer { display: none; }
 
   <div class="content-block">
     <div data-section="section-02" data-sub="callout" class="callout"></div>
+  </div>
+
+  <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Where Frontier Models Fail</h3>
+  <p class="failure-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
+  <div class="failure-grid" data-section="section-02" data-sub="where-frontier-models-fail">
+    <!-- 6 failure mode cards rendered by JS -->
   </div>
 
   <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">What Domain Fine-tuning Actually Means</h3>
@@ -989,6 +1035,7 @@ function injectContent(sections) {
     // Skip elements handled by special renderers
     if (el.classList.contains('compare-grid')) return;
     if (el.classList.contains('capability-grid')) return;
+    if (el.classList.contains('failure-grid')) return;
     if (el.classList.contains('agent-flow')) return;
 
     // Process step cards: append content after existing children
@@ -1167,6 +1214,59 @@ function renderCapabilityGrid(sections) {
   var html = '';
   cards.forEach(function(card) {
     html += '<div class="cap-card"><h4>' + card.title + '</h4><p>' + card.desc + '</p></div>';
+  });
+
+  grid.innerHTML = html;
+}
+
+function renderFailureGrid(sections) {
+  var section = sections['section-02'];
+  if (!section) return;
+  var key = Object.keys(section).find(function(k) {
+    return k.indexOf('where-frontier-models-fail') !== -1;
+  });
+  if (!key) return;
+
+  var text = section[key];
+  var grid = document.querySelector('.failure-grid[data-section="section-02"]');
+  if (!grid) return;
+
+  // Extract intro (lines before first **bold**)
+  var introLines = [];
+  var cards = [];
+  var currentTitle = '';
+  var currentDesc = [];
+  var seenBold = false;
+
+  text.split('\n').forEach(function(line) {
+    var boldMatch = line.match(/^\*\*(.+?)\*\*\s*$/);
+    if (boldMatch) {
+      seenBold = true;
+      if (currentTitle) {
+        cards.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+      }
+      currentTitle = boldMatch[1];
+      currentDesc = [];
+    } else if (!seenBold && line.trim().length > 0) {
+      introLines.push(line.trim());
+    } else if (currentTitle && line.trim().length > 0) {
+      currentDesc.push(line.trim());
+    }
+  });
+  if (currentTitle) {
+    cards.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+  }
+
+  // Render intro text
+  var introEl = document.querySelector('.failure-intro');
+  if (introEl && introLines.length) {
+    introEl.textContent = introLines.join(' ');
+  }
+
+  // Render cards
+  var html = '';
+  cards.forEach(function(card) {
+    html += '<div class="fail-card"><h4>' + card.title + '</h4><p>' + card.desc + '</p></div>';
   });
 
   grid.innerHTML = html;
@@ -1434,6 +1534,7 @@ async function init() {
     renderHeroFlow(sections);
     renderComparisonTable(sections['section-02']);
     renderCapabilityGrid(sections);
+    renderFailureGrid(sections);
     renderSection04Content(sections);
     renderAgentWorkflow(sections);
     renderAdditionalUseCases(sections);

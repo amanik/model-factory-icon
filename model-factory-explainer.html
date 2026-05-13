@@ -297,6 +297,35 @@
   }
   .cap-card p { font-size: 13px; color: var(--600); line-height: 1.55; }
 
+  /* ── failure mode cards ────────────── */
+  .failure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0 28px;
+  }
+  @media (max-width: 900px) { .failure-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .failure-grid { grid-template-columns: 1fr; } }
+  .fail-card {
+    border: 1.5px solid var(--300);
+    border-radius: 10px;
+    background: var(--card);
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .fail-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--500);
+    border-radius: 4px 0 0 4px;
+  }
+  .fail-card h4 { font-size: 13px; font-weight: 700; color: var(--900); margin-bottom: 4px; }
+  .fail-card p { font-size: 12.5px; color: var(--600); line-height: 1.5; }
+
   /* ── FAQ pills + accordion ───────────── */
   .faq-pills {
     display: flex;
@@ -445,6 +474,13 @@
     <div class="callout" data-section="section-02" data-sub="callout">
       <span class="ico">&#10148;</span>
       <div></div>
+    </div>
+
+    <!-- FRONTIER MODEL FAILURES -->
+    <h3>Where Frontier Models Fail</h3>
+    <p class="failure-intro" style="margin-bottom:12px;"></p>
+    <div class="failure-grid" data-section="section-02" data-sub="where-frontier-models-fail">
+      <!-- 6 failure mode cards rendered by JS -->
     </div>
 
     <!-- DOMAIN FINE-TUNING -->
@@ -613,6 +649,7 @@ function injectContent(sections) {
     // Skip elements handled by special renderers
     if (el.classList.contains('compare')) return;
     if (el.classList.contains('capability-grid')) return;
+    if (el.classList.contains('failure-grid')) return;
     if (el.closest && el.closest('.agent-flow')) return;
     if (el.dataset.sub === 'agent-workflow-steps') return;
     if (el.dataset.sub === 'comparison-table') return;
@@ -758,6 +795,56 @@ function renderCapabilityGrid(sections) {
   var html = '';
   cards.forEach(function(card) {
     html += '<div class="cap-card"><h4>' + card.title + '</h4><p>' + card.desc + '</p></div>';
+  });
+
+  grid.innerHTML = html;
+}
+
+function renderFailureGrid(sections) {
+  var section = sections['section-02'];
+  if (!section) return;
+  var key = Object.keys(section).find(function(k) {
+    return k.indexOf('where-frontier-models-fail') !== -1;
+  });
+  if (!key) return;
+
+  var text = section[key];
+  var grid = document.querySelector('.failure-grid[data-section="section-02"]');
+  if (!grid) return;
+
+  var introLines = [];
+  var cards = [];
+  var currentTitle = '';
+  var currentDesc = [];
+  var seenBold = false;
+
+  text.split('\n').forEach(function(line) {
+    var boldMatch = line.match(/^\*\*(.+?)\*\*\s*$/);
+    if (boldMatch) {
+      seenBold = true;
+      if (currentTitle) {
+        cards.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+      }
+      currentTitle = boldMatch[1];
+      currentDesc = [];
+    } else if (!seenBold && line.trim().length > 0) {
+      introLines.push(line.trim());
+    } else if (currentTitle && line.trim().length > 0) {
+      currentDesc.push(line.trim());
+    }
+  });
+  if (currentTitle) {
+    cards.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+  }
+
+  var introEl = document.querySelector('.failure-intro');
+  if (introEl && introLines.length) {
+    introEl.textContent = introLines.join(' ');
+  }
+
+  var html = '';
+  cards.forEach(function(card) {
+    html += '<div class="fail-card"><h4>' + card.title + '</h4><p>' + card.desc + '</p></div>';
   });
 
   grid.innerHTML = html;
@@ -934,6 +1021,7 @@ async function init() {
     // Special renderers
     renderExplainerComparisonTable(sections['section-02']);
     renderCapabilityGrid(sections);
+    renderFailureGrid(sections);
     renderAgentWorkflow(sections);
     renderFAQ(sections['section-05']);
 

@@ -112,6 +112,28 @@ Frontier models are extremely capable at language understanding and general reas
 
 <!-- explainer variant callout: "The output of the Model Factory is not a chatbot. It is a specialized agent combining reasoning, operational context, workflow execution, and enterprise integrations into a unified system." -->
 
+### Where Frontier Models Fail
+
+Even the most capable frontier models break down in predictable ways when applied to operational supply chain work.
+
+**Domain Language Gaps**
+Misunderstands warehouse terminology, treats operational terms as typos, and makes irrelevant suggestions that don't map to real workflows.
+
+**Lacking Operational Intuition**
+Cannot generalize across different warehouse configurations. Only performs with extensive prompt context — no embedded tribal or trade knowledge.
+
+**Unreliable Execution**
+Guesses when uncertain, leading to wasted retries. Performance is high-variance and hard to predict. Too strict on spelling and IDs, too loose on business logic.
+
+**Missing Operational Context**
+No memory across sessions. Misinterprets user intent without workflow awareness. No understanding of operational priorities or urgency.
+
+**Inefficiency at Scale**
+Thinks too long on simple lookups, adds latency to time-sensitive operations, and optimizes for plausible-sounding answers rather than correct operational outcomes.
+
+**Gaming vs. Solving**
+Reward hacking and pattern-matching produce outputs that look right but don't resolve the actual operational problem. Stylistic and formatting issues mask substantive gaps.
+
 ### What Domain Fine-tuning Actually Means
 
 Domain fine-tuning is not simply teaching a model industry terminology or adding more prompts. The real shift is that the model learns how a business domain operates: how workflows decompose, how operational decisions are made, what context matters, and how actions should be executed safely.
