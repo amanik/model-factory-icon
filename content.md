@@ -197,7 +197,7 @@ Every deployment creates training signal for the next iteration. Feedback loops 
 
 ---
 
-## Section 04: Allocation Shorts Agent
+## Section 04: First Agent — Allocation Shorts
 
 ### Intro
 The first specialized agent built using the Model Factory addresses one of the most common and time-consuming warehouse challenges: investigating allocation shortages.
@@ -241,6 +241,14 @@ Agent conversation: structured investigation with tool calls, data tables, and o
 
 And adds intro text: "The same Model Factory infrastructure supports building agents for:"
 -->
+
+### Next Steps
+
+**Ship the Allocation Shorts Agent**
+Move the first specialized model from evaluation into production, delivering autonomous shortage investigation to warehouse operations.
+
+**Expand across Blue Yonder products**
+Apply the Model Factory to more supply chain workflows — training specialized models that work across the Blue Yonder product suite.
 
 ---
 

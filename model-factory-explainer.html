@@ -357,6 +357,13 @@
     .arch-desc { margin-left: 0; padding-left: 0; max-width: none; }
   }
 
+  /* ── Next Steps ─────────────────────── */
+  .next-steps { display: flex; gap: 16px; margin: 12px 0 24px; }
+  .next-step-card { flex: 1; padding: 20px 24px; background: var(--indigo-bg); border: 1.5px solid rgba(54,96,189,0.2); border-radius: var(--r-card); }
+  .next-step-card h4 { font-size: 14px; font-weight: 700; color: var(--indigo-d); margin-bottom: 6px; }
+  .next-step-card p { font-size: 13.5px; color: var(--600); line-height: 1.6; margin: 0; }
+  @media (max-width: 600px) { .next-steps { flex-direction: column; } }
+
   /* ── FAQ pills + accordion ───────────── */
   .faq-pills {
     display: flex;
@@ -566,7 +573,7 @@
     </details>
 
     <!-- ALLOCATION SHORTS AGENT -->
-    <h2 id="allocation-shorts">Allocation Shorts Agent</h2>
+    <h2 id="allocation-shorts">First Agent — Allocation Shorts</h2>
     <p data-section="section-04" data-sub="intro"></p>
 
     <details open>
@@ -588,6 +595,9 @@
     <p>The same Model Factory infrastructure supports building agents for:</p>
     <ul data-section="section-04" data-sub="additional-use-cases" style="padding-left:20px; list-style:disc; max-width:680px;">
     </ul>
+
+    <h3>Next Steps</h3>
+    <div class="next-steps" data-section="section-04" data-sub="next-steps"></div>
 
     <!-- FAQ -->
     <h2 id="faq">Questions &amp; Answers</h2>
@@ -689,6 +699,7 @@ function injectContent(sections) {
     if (el.classList.contains('capability-grid')) return;
     if (el.classList.contains('failure-tabs')) return;
     if (el.classList.contains('arch-diagram')) return;
+    if (el.classList.contains('next-steps')) return;
     if (el.closest && el.closest('.agent-flow')) return;
     if (el.dataset.sub === 'agent-workflow-steps') return;
     if (el.dataset.sub === 'comparison-table') return;
@@ -1020,6 +1031,36 @@ function renderAgentWorkflow(sections) {
   });
 }
 
+function renderNextSteps(sections) {
+  var section = sections['section-04'];
+  if (!section) return;
+  var raw = section['next-steps'];
+  if (!raw) return;
+  var container = document.querySelector('.next-steps[data-section="section-04"]');
+  if (!container) return;
+
+  var lines = raw.split('\n');
+  var cards = [];
+  var current = null;
+  lines.forEach(function(line) {
+    var m = line.match(/^\*\*(.+?)\*\*\s*$/);
+    if (m) {
+      current = { title: m[1], desc: '' };
+      cards.push(current);
+    } else if (current && line.trim()) {
+      current.desc += (current.desc ? ' ' : '') + line.trim();
+    }
+  });
+
+  container.innerHTML = '';
+  cards.forEach(function(card) {
+    var div = document.createElement('div');
+    div.className = 'next-step-card';
+    div.innerHTML = '<h4>' + card.title + '</h4><p>' + card.desc + '</p>';
+    container.appendChild(div);
+  });
+}
+
 function renderFAQ(section) {
   if (!section) return;
 
@@ -1145,6 +1186,7 @@ async function init() {
     renderFailureTabs(sections);
     renderArchDiagram(sections);
     renderAgentWorkflow(sections);
+    renderNextSteps(sections);
     renderFAQ(sections['section-05']);
 
     // Re-initialize interactive features after content injection
