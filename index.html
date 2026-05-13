@@ -366,6 +366,20 @@ section:last-of-type { border-bottom: none; }
 .compare-operational li { color: var(--byx-800); }
 
 /* ═══════════════════════════════════════════════
+   PIPELINE DIAGRAM (Section 01)
+   ═══════════════════════════════════════════════ */
+.pipeline-diagram {
+  margin: 32px 0;
+  overflow-x: auto;
+}
+.pipeline-diagram svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ═══════════════════════════════════════════════
    PROCESS STEPS (Section 03)
    ═══════════════════════════════════════════════ */
 .process-steps {
@@ -920,7 +934,7 @@ body.slide-mode .site-footer { display: none; }
 <nav class="toc" id="toc">
   <a href="#what-we-build">What We Are Building</a>
   <a href="#why-not-generic">Why Generic AI Fails</a>
-  <a href="#model-factory-process">What the Model Factory Does <span class="n">5</span></a>
+  <a href="#model-factory-process">How It Builds a Model <span class="n">5</span></a>
   <a href="#allocation-shorts">Allocation Shorts</a>
   <a href="#qa">Q&amp;A <span class="n">24</span></a>
 </nav>
@@ -934,6 +948,64 @@ body.slide-mode .site-footer { display: none; }
     <h2>What We Are Building</h2>
   </div>
   <p data-section="section-01" data-sub="intro" class="sec-intro"></p>
+
+  <div class="pipeline-diagram">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 200" fill="none">
+      <style>
+        .pipe-label { font-family: 'Inter', system-ui, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; fill: #9ca3af; }
+        .pipe-box-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 500; fill: #374151; }
+        .pipe-arrow { stroke: #d1d5db; stroke-width: 1.5; fill: none; marker-end: url(#pipe-head); }
+        .pipe-output-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #2a4f9e; }
+      </style>
+      <defs>
+        <marker id="pipe-head" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
+        </marker>
+      </defs>
+
+      <!-- INPUTS -->
+      <text x="105" y="22" text-anchor="middle" class="pipe-label">Inputs</text>
+      <rect x="10" y="36" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+      <text x="105" y="59" text-anchor="middle" class="pipe-box-text">Operational Data</text>
+      <rect x="10" y="82" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+      <text x="105" y="105" text-anchor="middle" class="pipe-box-text">Jobs to Be Done</text>
+      <rect x="10" y="128" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+      <text x="105" y="151" text-anchor="middle" class="pipe-box-text">Success Criteria</text>
+
+      <!-- Arrow 1 -->
+      <line x1="210" y1="100" x2="270" y2="100" class="pipe-arrow"/>
+
+      <!-- PROCESS -->
+      <text x="420" y="22" text-anchor="middle" class="pipe-label">Training Pipeline</text>
+      <rect x="280" y="36" width="280" height="128" rx="12" fill="rgba(54,96,189,0.06)" stroke="#3660bd" stroke-width="1.5"/>
+      <rect x="300" y="56" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+      <text x="354" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Fine-tuning</text>
+      <rect x="300" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+      <text x="354" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Pref. Alignment</text>
+      <rect x="432" y="56" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+      <text x="486" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">RL / Simulation</text>
+      <rect x="432" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+      <text x="486" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Evaluation</text>
+      <!-- feedback loop -->
+      <path d="M540,142 Q555,142 555,130 L555,80 Q555,68 540,68" stroke="#3660bd" stroke-width="1" fill="none" stroke-dasharray="3,3" marker-end="url(#pipe-loop)"/>
+      <text x="420" y="156" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#3660bd; font-style:italic;">continuous improvement</text>
+      <defs>
+        <marker id="pipe-loop" markerWidth="6" markerHeight="5" refX="1" refY="2.5" orient="auto">
+          <path d="M6,0 L0,2.5 L6,5" fill="none" stroke="#3660bd" stroke-width="1"/>
+        </marker>
+      </defs>
+
+      <!-- Arrow 2 -->
+      <line x1="570" y1="100" x2="630" y2="100" class="pipe-arrow"/>
+
+      <!-- OUTPUT -->
+      <text x="735" y="22" text-anchor="middle" class="pipe-label">Output</text>
+      <rect x="640" y="54" width="190" height="92" rx="12" fill="rgba(54,96,189,0.06)" stroke="#3660bd" stroke-width="2"/>
+      <text x="735" y="92" text-anchor="middle" class="pipe-output-text">Specialized</text>
+      <text x="735" y="110" text-anchor="middle" class="pipe-output-text">SC Model</text>
+      <text x="735" y="134" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#6b7280; font-style:italic;">for agents &amp; workflows</text>
+    </svg>
+  </div>
 
   <div class="content-block">
     <div data-section="section-01" data-sub="agent-capabilities"></div>
@@ -983,12 +1055,12 @@ body.slide-mode .site-footer { display: none; }
 </section>
 
 <!-- ═══════════════════════════════════════════
-     SECTION 03: WHAT THE MODEL FACTORY DOES
+     SECTION 03: HOW THE MODEL FACTORY BUILDS A SPECIALIZED SC MODEL
      ═══════════════════════════════════════════ -->
 <section id="model-factory-process">
   <div class="sec-head">
     <span class="idx">03</span>
-    <h2>What the Model Factory Does</h2>
+    <h2>How the Model Factory Builds a Specialized SC Model</h2>
     <span class="count">5 steps</span>
   </div>
   <p data-section="section-03" data-sub="intro" class="sec-intro"></p>
@@ -1469,7 +1541,7 @@ function renderArchDiagram(sections) {
   // Define node layouts for each architecture
   var diagrams = [
     { nodes: ['Frontier Model', '→', 'Specialized SC Model'], classes: ['frontier', '', 'specialized'] },
-    { nodes: ['Frontier Model', '→', 'SC Sub-Agent', '→', 'Enterprise APIs'], classes: ['frontier', '', 'specialized', '', 'specialized'] },
+    { nodes: ['Frontier Model', '→', 'SC Sub-Agent'], classes: ['frontier', '', 'specialized'] },
     { nodes: ['Foundational Supply Chain Model'], classes: ['foundational'] }
   ];
 

@@ -67,9 +67,6 @@ The goal is not simply to answer questions. The goal is to create specialized ag
 ### Callout
 > At its core, the Model Factory is a scalable capability-generation system for specialized AI — owned intelligence, not rented intelligence, built in a repeatable way we can scale across the business.
 
-### How Does the Model Training Process Work?
-Define the supply-chain job to be done, build an agent and success criteria to evaluate it, run the agent through thousands of related tasks while benchmarking where frontier models fail, generate high-quality training data, fine-tune the model, train against good and bad traces and failure modes, run it through repeated evaluation, and keep iterating until the model performs the workflow the way Blue Yonder wants it to.
-
 ### Model Architecture
 The primary reason for training specialized models is to achieve faster, cheaper, and more performant automation — enabling agents to handle more tasks autonomously. Three architecture patterns show how specialized and frontier models work together.
 
@@ -166,7 +163,7 @@ The model optimizes for resolving business issues rather than simply answering t
 
 ---
 
-## Section 03: What the Model Factory Does
+## Section 03: How the Model Factory Builds a Specialized SC Model
 
 ### Intro
 The Model Factory is a repeatable process for building specialized AI capabilities. Rather than a single training run, it is a continuous cycle of specification, data generation, training, evaluation, and improvement.

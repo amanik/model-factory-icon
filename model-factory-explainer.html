@@ -476,7 +476,7 @@
     <div class="label">On this page</div>
     <a href="#tldr">TL;DR</a>
     <a href="#why-specialized">Why specialized AI</a>
-    <a href="#model-factory-process">What it does</a>
+    <a href="#model-factory-process">How it builds a model</a>
     <a href="#model-factory-process" class="l2">1. Problem Spec</a>
     <a href="#model-factory-process" class="l2">2. Data Generation</a>
     <a href="#model-factory-process" class="l2">3. Training</a>
@@ -500,6 +500,57 @@
       <h1>How the <em>Model Training Factory</em> works</h1>
       <div class="tldr" id="tldr" data-section="hero" data-sub="tldr-explainer-only"></div>
     </header>
+
+    <!-- PIPELINE DIAGRAM -->
+    <div class="pipeline-diagram" style="margin:24px 0 32px; overflow-x:auto;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 200" fill="none" style="display:block;max-width:100%;height:auto;">
+        <style>
+          .pipe-label { font-family: 'Inter', system-ui, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; fill: #9ca3af; }
+          .pipe-box-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 500; fill: #374151; }
+          .pipe-arrow { stroke: #d1d5db; stroke-width: 1.5; fill: none; marker-end: url(#pipe-head-e); }
+          .pipe-output-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #2a4f9e; }
+        </style>
+        <defs>
+          <marker id="pipe-head-e" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
+          </marker>
+          <marker id="pipe-loop-e" markerWidth="6" markerHeight="5" refX="1" refY="2.5" orient="auto">
+            <path d="M6,0 L0,2.5 L6,5" fill="none" stroke="#3660bd" stroke-width="1"/>
+          </marker>
+        </defs>
+        <!-- INPUTS -->
+        <text x="105" y="22" text-anchor="middle" class="pipe-label">Inputs</text>
+        <rect x="10" y="36" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+        <text x="105" y="59" text-anchor="middle" class="pipe-box-text">Operational Data</text>
+        <rect x="10" y="82" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+        <text x="105" y="105" text-anchor="middle" class="pipe-box-text">Jobs to Be Done</text>
+        <rect x="10" y="128" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
+        <text x="105" y="151" text-anchor="middle" class="pipe-box-text">Success Criteria</text>
+        <!-- Arrow 1 -->
+        <line x1="210" y1="100" x2="270" y2="100" class="pipe-arrow"/>
+        <!-- PROCESS -->
+        <text x="420" y="22" text-anchor="middle" class="pipe-label">Training Pipeline</text>
+        <rect x="280" y="36" width="280" height="128" rx="12" fill="rgba(54,96,189,0.06)" stroke="#3660bd" stroke-width="1.5"/>
+        <rect x="300" y="56" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="354" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Fine-tuning</text>
+        <rect x="300" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="354" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Pref. Alignment</text>
+        <rect x="432" y="56" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="486" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">RL / Simulation</text>
+        <rect x="432" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
+        <text x="486" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Evaluation</text>
+        <path d="M540,142 Q555,142 555,130 L555,80 Q555,68 540,68" stroke="#3660bd" stroke-width="1" fill="none" stroke-dasharray="3,3" marker-end="url(#pipe-loop-e)"/>
+        <text x="420" y="156" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#3660bd; font-style:italic;">continuous improvement</text>
+        <!-- Arrow 2 -->
+        <line x1="570" y1="100" x2="630" y2="100" class="pipe-arrow"/>
+        <!-- OUTPUT -->
+        <text x="735" y="22" text-anchor="middle" class="pipe-label">Output</text>
+        <rect x="640" y="54" width="190" height="92" rx="12" fill="rgba(54,96,189,0.06)" stroke="#3660bd" stroke-width="2"/>
+        <text x="735" y="92" text-anchor="middle" class="pipe-output-text">Specialized</text>
+        <text x="735" y="110" text-anchor="middle" class="pipe-output-text">SC Model</text>
+        <text x="735" y="134" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#6b7280; font-style:italic;">for agents &amp; workflows</text>
+      </svg>
+    </div>
 
     <!-- MODEL ARCHITECTURE -->
     <h3 style="margin-top:32px;">Model Architecture</h3>
@@ -542,7 +593,7 @@
     </div>
 
     <!-- WHAT THE MODEL FACTORY DOES -->
-    <h2 id="model-factory-process">What the Model Factory does</h2>
+    <h2 id="model-factory-process">How the Model Factory Builds a Specialized SC Model</h2>
     <p data-section="section-03" data-sub="intro"></p>
 
     <p>Expand each step to see what it involves.</p>
@@ -957,7 +1008,7 @@ function renderArchDiagram(sections) {
 
   var diagrams = [
     { nodes: ['Frontier Model', '→', 'Specialized SC Model'], classes: ['frontier', '', 'specialized'] },
-    { nodes: ['Frontier Model', '→', 'SC Sub-Agent', '→', 'Enterprise APIs'], classes: ['frontier', '', 'specialized', '', 'specialized'] },
+    { nodes: ['Frontier Model', '→', 'SC Sub-Agent'], classes: ['frontier', '', 'specialized'] },
     { nodes: ['Foundational Supply Chain Model'], classes: ['foundational'] }
   ];
 
