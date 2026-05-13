@@ -450,47 +450,122 @@ section:last-of-type { border-bottom: none; }
   line-height: 1.6;
 }
 
-/* ── FAILURE MODE GRID ── */
-.failure-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 14px;
+/* ── FAILURE MODE TABS ── */
+.failure-tabs {
   margin: 16px 0 36px;
 }
-.fail-card {
+.fail-tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--byx-200);
+  margin-bottom: 0;
+  overflow-x: auto;
+}
+.fail-tab-btn {
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--byx-500);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -2px;
+  transition: color 150ms, border-color 150ms;
+}
+.fail-tab-btn:hover { color: var(--byx-700); }
+.fail-tab-btn.active {
+  color: var(--byx-indigo);
+  border-bottom-color: var(--byx-indigo);
+}
+.fail-tab-panel {
+  display: none;
+  padding: 20px 24px;
+  background: var(--byx-50);
+  border: 1.5px solid var(--byx-200);
+  border-top: none;
+  border-radius: 0 0 var(--r-card) var(--r-card);
+  animation: fadeTab 200ms ease;
+}
+.fail-tab-panel.active { display: block; }
+@keyframes fadeTab { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.fail-tab-panel p {
+  font-size: 14px;
+  color: var(--byx-600);
+  line-height: 1.7;
+}
+
+/* ── MODEL ARCHITECTURE DIAGRAM ── */
+.arch-diagram {
+  margin: 24px 0 32px;
+}
+.arch-pattern {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
+  padding: 20px 24px;
   background: var(--byx-50);
   border: 1.5px solid var(--byx-200);
   border-radius: var(--r-card);
-  padding: 18px 20px;
-  position: relative;
-  overflow: hidden;
 }
-.fail-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--byx-400);
-  border-radius: 4px 0 0 4px;
-}
-.fail-card h4 {
-  font-size: 13px;
+.arch-pattern .arch-label {
+  width: 140px;
+  flex-shrink: 0;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--byx-800);
-  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--byx-500);
 }
-.fail-card p {
+.arch-pattern .arch-flow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.arch-node {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.arch-node.frontier {
+  background: var(--byx-100);
+  border: 1.5px solid var(--byx-300);
+  color: var(--byx-700);
+}
+.arch-node.specialized {
+  background: var(--byx-indigo-bg);
+  border: 1.5px solid var(--byx-indigo);
+  color: var(--byx-indigo);
+}
+.arch-node.foundational {
+  background: linear-gradient(135deg, var(--byx-indigo-bg), rgba(54,96,189,0.12));
+  border: 1.5px solid var(--byx-indigo);
+  color: var(--byx-indigo-d);
+}
+.arch-arrow {
+  color: var(--byx-400);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.arch-desc {
   font-size: 12.5px;
-  color: var(--byx-600);
-  line-height: 1.55;
+  color: var(--byx-500);
+  margin-left: auto;
+  padding-left: 20px;
+  max-width: 220px;
+  line-height: 1.5;
+  font-style: italic;
 }
-
-/* Autonomy track and flywheel removed — content moved to Q&A */
-
-/* ═══════════════════════════════════════════════
-   (placeholder — flywheel/autonomy CSS removed)
-   ═══════════════════════════════════════════════ */
+@media (max-width: 880px) {
+  .arch-pattern { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .arch-pattern .arch-label { width: auto; }
+  .arch-desc { margin-left: 0; padding-left: 0; max-width: none; }
+}
 /* ═══════════════════════════════════════════════
    USE CASE CARD (Section 04)
    ═══════════════════════════════════════════════ */
@@ -704,10 +779,6 @@ body.slide-mode .site-footer { display: none; }
    ═══════════════════════════════════════════════ */
 @media (max-width: 1100px) {
   .capability-grid { grid-template-columns: 1fr; }
-  .failure-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 700px) {
-  .failure-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 880px) {
   .hero-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -755,7 +826,8 @@ body.slide-mode .site-footer { display: none; }
   .qa-answer { max-height: none !important; padding-bottom: 12px !important; overflow: visible !important; }
   .qa-item { page-break-inside: avoid; }
   * { box-shadow: none !important; }
-  .usecase-card, .process-step, .cap-card, .fail-card { border: 1px solid var(--byx-200); }
+  .usecase-card, .process-step, .cap-card, .fail-tab-panel, .arch-pattern { border: 1px solid var(--byx-200); }
+  .fail-tab-panel { display: block !important; page-break-inside: avoid; }
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   body { font-size: 13px; }
@@ -826,6 +898,12 @@ body.slide-mode .site-footer { display: none; }
 
     <div data-section="section-01" data-sub="how-does-the-model-training-process-work"></div>
   </div>
+
+  <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Model Architecture</h3>
+  <p class="arch-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
+  <div class="arch-diagram" data-section="section-01" data-sub="model-architecture">
+    <!-- 3 architecture patterns rendered by JS -->
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -846,8 +924,8 @@ body.slide-mode .site-footer { display: none; }
 
   <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">Where Frontier Models Fail</h3>
   <p class="failure-intro" style="font-size:15px; color:var(--byx-600); margin-bottom:16px; line-height:1.6;"></p>
-  <div class="failure-grid" data-section="section-02" data-sub="where-frontier-models-fail">
-    <!-- 6 failure mode cards rendered by JS -->
+  <div class="failure-tabs" data-section="section-02" data-sub="where-frontier-models-fail">
+    <!-- Tabbed failure modes rendered by JS -->
   </div>
 
   <h3 style="font-size:20px; font-weight:700; color:var(--byx-800); margin:40px 0 8px;">What Domain Fine-tuning Actually Means</h3>
@@ -1035,7 +1113,8 @@ function injectContent(sections) {
     // Skip elements handled by special renderers
     if (el.classList.contains('compare-grid')) return;
     if (el.classList.contains('capability-grid')) return;
-    if (el.classList.contains('failure-grid')) return;
+    if (el.classList.contains('failure-tabs')) return;
+    if (el.classList.contains('arch-diagram')) return;
     if (el.classList.contains('agent-flow')) return;
 
     // Process step cards: append content after existing children
@@ -1219,7 +1298,7 @@ function renderCapabilityGrid(sections) {
   grid.innerHTML = html;
 }
 
-function renderFailureGrid(sections) {
+function renderFailureTabs(sections) {
   var section = sections['section-02'];
   if (!section) return;
   var key = Object.keys(section).find(function(k) {
@@ -1228,8 +1307,8 @@ function renderFailureGrid(sections) {
   if (!key) return;
 
   var text = section[key];
-  var grid = document.querySelector('.failure-grid[data-section="section-02"]');
-  if (!grid) return;
+  var container = document.querySelector('.failure-tabs[data-section="section-02"]');
+  if (!container) return;
 
   // Extract intro (lines before first **bold**)
   var introLines = [];
@@ -1263,13 +1342,99 @@ function renderFailureGrid(sections) {
     introEl.textContent = introLines.join(' ');
   }
 
-  // Render cards
+  // Build tab bar + panels
+  var tabBar = '<div class="fail-tab-bar">';
+  var panels = '';
+  cards.forEach(function(card, i) {
+    var active = i === 0 ? ' active' : '';
+    tabBar += '<button class="fail-tab-btn' + active + '" data-fail-tab="' + i + '">' + card.title + '</button>';
+    panels += '<div class="fail-tab-panel' + active + '" data-fail-panel="' + i + '"><p>' + card.desc + '</p></div>';
+  });
+  tabBar += '</div>';
+
+  container.innerHTML = tabBar + panels;
+
+  // Wire up tab clicks
+  container.querySelectorAll('.fail-tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      container.querySelectorAll('.fail-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      container.querySelectorAll('.fail-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      container.querySelector('[data-fail-panel="' + btn.dataset.failTab + '"]').classList.add('active');
+    });
+  });
+}
+
+function renderArchDiagram(sections) {
+  var section = sections['section-01'];
+  if (!section) return;
+  var key = Object.keys(section).find(function(k) {
+    return k.indexOf('model-architecture') !== -1;
+  });
+  if (!key) return;
+
+  var text = section[key];
+  var container = document.querySelector('.arch-diagram[data-section="section-01"]');
+  if (!container) return;
+
+  // Extract intro + architecture cards
+  var introLines = [];
+  var archs = [];
+  var currentTitle = '';
+  var currentDesc = [];
+  var seenBold = false;
+
+  text.split('\n').forEach(function(line) {
+    var boldMatch = line.match(/^\*\*(.+?)\*\*\s*$/);
+    if (boldMatch) {
+      seenBold = true;
+      if (currentTitle) {
+        archs.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+      }
+      currentTitle = boldMatch[1];
+      currentDesc = [];
+    } else if (!seenBold && line.trim().length > 0) {
+      introLines.push(line.trim());
+    } else if (currentTitle && line.trim().length > 0) {
+      currentDesc.push(line.trim());
+    }
+  });
+  if (currentTitle) {
+    archs.push({ title: currentTitle, desc: currentDesc.join(' ').trim() });
+  }
+
+  // Render intro
+  var introEl = document.querySelector('.arch-intro');
+  if (introEl && introLines.length) {
+    introEl.textContent = introLines.join(' ');
+  }
+
+  // Define node layouts for each architecture
+  var diagrams = [
+    { nodes: ['Frontier Model', '→', 'Specialized SC Model'], classes: ['frontier', '', 'specialized'] },
+    { nodes: ['Frontier Model', '→', 'SC Sub-Agent', '→', 'Enterprise APIs'], classes: ['frontier', '', 'specialized', '', 'specialized'] },
+    { nodes: ['Foundational Supply Chain Model'], classes: ['foundational'] }
+  ];
+
   var html = '';
-  cards.forEach(function(card) {
-    html += '<div class="fail-card"><h4>' + card.title + '</h4><p>' + card.desc + '</p></div>';
+  archs.forEach(function(arch, i) {
+    var diagram = diagrams[i] || diagrams[0];
+    html += '<div class="arch-pattern">';
+    html += '<div class="arch-label">' + arch.title + '</div>';
+    html += '<div class="arch-flow">';
+    diagram.nodes.forEach(function(node, j) {
+      if (node === '→') {
+        html += '<span class="arch-arrow">→</span>';
+      } else {
+        html += '<span class="arch-node ' + (diagram.classes[j] || '') + '">' + node + '</span>';
+      }
+    });
+    html += '</div>';
+    html += '<div class="arch-desc">' + arch.desc + '</div>';
+    html += '</div>';
   });
 
-  grid.innerHTML = html;
+  container.innerHTML = html;
 }
 
 function renderAgentWorkflow(sections) {
@@ -1534,7 +1699,8 @@ async function init() {
     renderHeroFlow(sections);
     renderComparisonTable(sections['section-02']);
     renderCapabilityGrid(sections);
-    renderFailureGrid(sections);
+    renderFailureTabs(sections);
+    renderArchDiagram(sections);
     renderSection04Content(sections);
     renderAgentWorkflow(sections);
     renderAdditionalUseCases(sections);

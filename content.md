@@ -70,6 +70,18 @@ The goal is not simply to answer questions. The goal is to create specialized ag
 ### How Does the Model Training Process Work?
 Define the supply-chain job to be done, build an agent and success criteria to evaluate it, run the agent through thousands of related tasks while benchmarking where frontier models fail, generate high-quality training data, fine-tune the model, train against good and bad traces and failure modes, run it through repeated evaluation, and keep iterating until the model performs the workflow the way Blue Yonder wants it to.
 
+### Model Architecture
+The primary reason for training specialized models is to achieve faster, cheaper, and more performant automation — enabling agents to handle more tasks autonomously. Three architecture patterns show how specialized and frontier models work together.
+
+**Routing Model**
+A frontier model acts as a router, analyzing incoming requests and dispatching them to the right specialized supply chain model. The frontier handles intent classification; the specialized model handles domain execution. Fast, cheap, and targeted.
+
+**Sub-Agent Model**
+A frontier model handles high-level reasoning and orchestration, then delegates operational tasks to a specialized supply chain sub-agent. The frontier thinks; the specialized model acts. Each does what it's best at.
+
+**Foundational Supply Chain Model**
+The long-term vision: a single foundational model trained end-to-end on supply chain operations. One model that understands the entire domain — routing, reasoning, and execution — without needing a frontier model in the loop.
+
 ---
 
 ## Section 02: Why Generic AI Is Not Enough
