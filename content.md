@@ -153,44 +153,19 @@ The Model Factory is a repeatable process for building specialized AI capabiliti
 5. Continuous Improvement — Feedback loops generate new scenarios each iteration
 
 ### 1. Problem and Domain Specification
-Define the supply-chain job to be done. Identify the specific workflow the agent must perform, establish success criteria, and build evaluation benchmarks. This step scopes the operational domain and sets measurable goals before any training begins.
-
-- Define target workflow and operational scope
-- Establish success criteria and evaluation benchmarks
-- Identify required tool integrations and enterprise APIs
-- Document expected agent behaviors and edge cases
+Start by defining the supply-chain job the agent must perform. Scope the operational domain, set measurable success criteria, and build evaluation benchmarks — all before any training begins.
 
 ### 2. Data Artifact Generation
-Generate high-quality training data using 100% synthetic data from simulated training environments. Create diverse operational scenarios that cover normal operations, edge cases, and failure modes — all without using customer data.
-
-- 100% synthetic data generation
-- Simulated training environments mirroring operational workflows
-- Diverse scenario coverage including edge cases
-- Safe failure mode generation at scale
+Generate high-quality training data using 100% synthetic data from simulated training environments. Cover normal operations, edge cases, and failure modes at scale — without using any customer data.
 
 ### 3. Model Training
-Apply domain fine-tuning and preference alignment to specialize the model for supply chain execution. Domain fine-tuning teaches the model operational workflows and reasoning patterns. Preference alignment teaches the model to distinguish between good and bad approaches, ensuring it completes tasks the way Blue Yonder wants them completed.
-
-- Domain fine-tuning on operational workflows
-- Preference alignment using good vs. bad response pairs
-- Reinforcement learning from simulated training environments
-- Training against failure modes and edge cases
+Specialize the model through domain fine-tuning and preference alignment. Fine-tuning teaches operational workflows and reasoning patterns; preference alignment teaches the model to distinguish good approaches from bad, ensuring it completes tasks the way Blue Yonder wants.
 
 ### 4. Model Evaluation and Go Live
-Run the model through repeated evaluation against benchmarks, scenario replay, and human review gates. Deploy only when quality thresholds are met. Evaluation is not an afterthought — it is a first-class component of the factory process.
-
-- Benchmark suites and regression testing
-- Scenario replay and automated evaluation pipelines
-- Human review gates and confidence thresholds
-- Guardrails and escalation mechanisms
+Run the model through benchmarks, scenario replay, and human review gates before deployment. Evaluation is not an afterthought — it is a first-class component of the factory. Deploy only when quality thresholds are met.
 
 ### 5. Continuous Improvement
-Every deployment creates training signal for the next iteration. Feedback loops from operational use generate new scenarios, identify gaps, and drive continuous model improvement. The system gets better with every cycle.
-
-- Operational feedback generates new training scenarios
-- Evaluation results loop back into data generation
-- Continuous trajectory collection and analysis
-- Each iteration expands coverage and improves quality
+Every deployment creates training signal for the next iteration. Feedback loops generate new scenarios, identify gaps, and drive continuous improvement — the system gets better with every cycle.
 
 ---
 
