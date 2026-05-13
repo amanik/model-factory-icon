@@ -128,23 +128,17 @@ Frontier models are extremely capable at language understanding and general reas
 
 Even the most capable frontier models break down in predictable ways when applied to operational supply chain work.
 
-**Domain Language Gaps**
-Misunderstands warehouse terminology, treats operational terms as typos, and makes irrelevant suggestions that don't map to real workflows.
+**Domain Language**
+Misunderstands warehouse terminology, treats operational terms as typos, and makes irrelevant suggestions that don't map to real workflows. Guesses when uncertain, leading to wasted retries — too strict on spelling and IDs, too loose on business logic.
 
-**Lacking Operational Intuition**
-Cannot generalize across different warehouse configurations. Only performs with extensive prompt context — no embedded tribal or trade knowledge.
+**Operational Intuition**
+Cannot generalize across different warehouse configurations. Only performs with extensive prompt context — no embedded tribal or trade knowledge. Thinks too long on simple lookups and adds latency to time-sensitive operations.
 
-**Unreliable Execution**
-Guesses when uncertain, leading to wasted retries. Performance is high-variance and hard to predict. Too strict on spelling and IDs, too loose on business logic.
-
-**Missing Operational Context**
-No memory across sessions. Misinterprets user intent without workflow awareness. No understanding of operational priorities or urgency.
-
-**Inefficiency at Scale**
-Thinks too long on simple lookups, adds latency to time-sensitive operations, and optimizes for plausible-sounding answers rather than correct operational outcomes.
+**Operational Context**
+No memory across sessions. Misinterprets user intent without workflow awareness. No understanding of operational priorities or urgency. Optimizes for plausible-sounding answers rather than correct operational outcomes.
 
 **Gaming vs. Solving**
-Reward hacking and pattern-matching produce outputs that look right but don't resolve the actual operational problem. Stylistic and formatting issues mask substantive gaps.
+Reward hacking and pattern-matching produce outputs that look right but don't resolve the actual operational problem. Stylistic and formatting issues mask substantive gaps in reasoning and execution.
 
 ### What Domain Fine-tuning Actually Means
 

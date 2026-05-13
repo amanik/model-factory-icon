@@ -453,16 +453,20 @@ section:last-of-type { border-bottom: none; }
 /* ── FAILURE MODE TABS ── */
 .failure-tabs {
   margin: 16px 0 36px;
+  border: 1.5px solid var(--byx-200);
+  border-radius: var(--r-card);
+  background: var(--byx-50);
+  overflow: hidden;
 }
 .fail-tab-bar {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid var(--byx-200);
-  margin-bottom: 0;
+  border-bottom: 1.5px solid var(--byx-200);
+  background: var(--byx-card);
   overflow-x: auto;
 }
 .fail-tab-btn {
-  padding: 10px 18px;
+  padding: 12px 24px;
   font-size: 13px;
   font-weight: 600;
   color: var(--byx-500);
@@ -471,7 +475,7 @@ section:last-of-type { border-bottom: none; }
   cursor: pointer;
   white-space: nowrap;
   border-bottom: 2.5px solid transparent;
-  margin-bottom: -2px;
+  margin-bottom: -1.5px;
   transition: color 150ms, border-color 150ms;
 }
 .fail-tab-btn:hover { color: var(--byx-700); }
@@ -481,11 +485,7 @@ section:last-of-type { border-bottom: none; }
 }
 .fail-tab-panel {
   display: none;
-  padding: 20px 24px;
-  background: var(--byx-50);
-  border: 1.5px solid var(--byx-200);
-  border-top: none;
-  border-radius: 0 0 var(--r-card) var(--r-card);
+  padding: 24px 28px;
   animation: fadeTab 200ms ease;
 }
 .fail-tab-panel.active { display: block; }
