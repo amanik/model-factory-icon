@@ -35,11 +35,11 @@ Blue Yonder AI Platform
 The Model Training **Factory**
 
 ### Intro
-A repeatable system for building custom supply-chain models trained to operate like subject matter experts in the Blue Yonder ecosystem. Owned intelligence, not rented — built to scale across the business.
+A repeatable system for building specialized supply-chain models trained to operate like subject matter experts in the Blue Yonder ecosystem. Owned intelligence, not rented — built to scale across the business.
 
 ### Factory Flow Diagram (pipeline stages)
 1. Operational Data
-2. Simulation / Gym
+2. Simulated Training
 3. Training & Evaluation
 4. Specialized Models
 5. Platform Integration
@@ -47,17 +47,17 @@ A repeatable system for building custom supply-chain models trained to operate l
 
 ### TL;DR (explainer only)
 <!-- This section only appears in explainer.html -->
-**TL;DR** — The Model Factory is a repeatable system for building, evaluating, and deploying specialized AI capabilities for supply chain operations. It combines operational data, simulation environments, layered training (SFT, DPO, RL), and continuous evaluation to produce operational agents — not chatbots. The first agent investigates allocation shortages end-to-end in warehouse operations.
+**TL;DR** — The Model Factory is a repeatable system for building, evaluating, and deploying specialized AI capabilities for supply chain operations. It combines operational data, simulated training environments, layered training (domain fine-tuning, preference alignment, RL), and continuous evaluation to produce specialized agents — not chatbots. The first agent investigates allocation shortages end-to-end in warehouse operations.
 
 ---
 
 ## Section 01: What We Are Building
 
 ### Intro
-The Model Factory is Blue Yonder's repeatable system for building operational AI capabilities for supply chain workflows. Rather than building isolated copilots or one-off AI demos, the Model Factory creates specialized AI systems that can reason about operational scenarios, interact with enterprise workflows, and continuously improve through evaluation and learning loops.
+The Model Factory is Blue Yonder's repeatable system for building specialized AI capabilities for supply chain workflows. Rather than building isolated copilots or one-off AI demos, the Model Factory creates specialized AI systems that can reason about operational scenarios, interact with enterprise workflows, and continuously improve through evaluation and learning loops.
 
 ### Agent Capabilities
-The goal is not simply to answer questions. The goal is to create operational agents that can:
+The goal is not simply to answer questions. The goal is to create specialized agents that can:
 - Understand warehouse and supply chain workflows
 - Investigate operational problems
 - Execute structured workflows
@@ -65,7 +65,7 @@ The goal is not simply to answer questions. The goal is to create operational ag
 - Learn from evaluations and operational feedback
 
 ### Callout
-> At its core, the Model Factory is a scalable capability-generation system for operational AI — owned intelligence, not rented intelligence, built in a repeatable way we can scale across the business.
+> At its core, the Model Factory is a scalable capability-generation system for specialized AI — owned intelligence, not rented intelligence, built in a repeatable way we can scale across the business.
 
 ### How Does the Model Training Process Work?
 Define the supply-chain job to be done, build an agent and success criteria to evaluate it, run the agent through thousands of related tasks while benchmarking where frontier models fail, generate high-quality training data, fine-tune the model, train against good and bad traces and failure modes, run it through repeated evaluation, and keep iterating until the model performs the workflow the way Blue Yonder wants it to.
@@ -75,13 +75,13 @@ Define the supply-chain job to be done, build an agent and success criteria to e
 ## Section 02: Why Generic AI Is Not Enough
 
 ### Intro
-Frontier models are extremely capable at language understanding and general reasoning. However, supply chain operations introduce a fundamentally different problem space. This is why operational AI requires a dedicated system architecture rather than simply adding prompts on top of a general-purpose model.
+Frontier models are extremely capable at language understanding and general reasoning. However, supply chain operations introduce a fundamentally different problem space. This is why specialized AI requires a dedicated system architecture rather than simply adding prompts on top of a general-purpose model.
 
 <!-- explainer variant intro: "General-purpose LLMs are strong at language understanding, but supply chain operations require capabilities that generic models don't provide out of the box." -->
 
-### Comparison: Generic AI vs Operational AI
+### Comparison: Generic AI vs Specialized AI
 
-| Generic AI | Operational AI (Model Factory) |
+| Generic AI | Specialized AI (Model Factory) |
 |---|---|
 | Broad conversational intelligence | Deep operational context awareness |
 | Static prompt-based reasoning | Structured workflow reasoning |
@@ -99,7 +99,7 @@ Frontier models are extremely capable at language understanding and general reas
 - No continuous improvement from operations
 -->
 
-<!-- explainer variant Operational AI column:
+<!-- explainer variant Specialized AI column:
 - Domain-specialized reasoning
 - Structured multi-step planning
 - Deep operational context and state awareness
@@ -108,159 +108,96 @@ Frontier models are extremely capable at language understanding and general reas
 -->
 
 ### Callout
-> Generic AI systems are optimized for broad conversational intelligence. Operational AI systems must instead understand workflows and state transitions, navigate enterprise APIs and systems, reason over operational data, execute tasks reliably, and be evaluated against measurable outcomes.
+> Generic AI systems are optimized for broad conversational intelligence. Specialized and domain fine-tuned AI systems must instead understand workflows and state transitions, navigate enterprise APIs and systems, reason over operational data, execute tasks reliably, and be evaluated against measurable outcomes.
 
-<!-- explainer variant callout: "The output of the Model Factory is not a chatbot. It is an operational agent combining reasoning, operational context, workflow execution, and enterprise integrations into a unified system." -->
+<!-- explainer variant callout: "The output of the Model Factory is not a chatbot. It is a specialized agent combining reasoning, operational context, workflow execution, and enterprise integrations into a unified system." -->
+
+### What Domain Fine-tuning Actually Means
+
+Domain fine-tuning is not simply teaching a model industry terminology or adding more prompts. The real shift is that the model learns how a business domain operates: how workflows decompose, how operational decisions are made, what context matters, and how actions should be executed safely.
+
+### Key Capabilities of a Domain Fine-tuned Model
+
+**Operational Reasoning**
+The model learns how business workflows naturally break down into operational investigations, dependencies, and next steps.
+
+**Business Interpretation**
+The model translates raw enterprise data into operational meaning, urgency, and business impact rather than simply returning system outputs.
+
+**Context-Aware Decision Making**
+The model learns when to infer, ask follow-up questions, summarize, or stop execution safely.
+
+**Operational Prioritization**
+The model understands that not all records or events matter equally and learns to prioritize based on operational impact and urgency.
+
+**Action-Oriented Responses**
+The model optimizes for resolving business issues rather than simply answering the immediate question.
+
+### Domain Fine-tuning Callout
+> Domain fine-tuning is fundamentally about operational reasoning. The model learns how work is actually performed: how workflows break down, how decisions are prioritized, how operational context changes meaning, and how enterprise data translates into business action.
 
 ---
 
-## Section 03: The Model Factory Architecture
+## Section 03: What the Model Factory Does
 
 ### Intro
-The Model Factory combines operational data, simulation systems, evaluation pipelines, and continuous learning loops into a scalable operational AI platform.
+The Model Factory is a repeatable process for building specialized AI capabilities. Rather than a single training run, it is a continuous cycle of specification, data generation, training, evaluation, and improvement.
 
-<!-- explainer variant intro: "Each component feeds the next. Evaluation results loop back into the data layer, creating a continuous improvement flywheel." -->
+<!-- explainer variant intro: "Each step feeds the next. Evaluation results loop back into data generation, creating a continuous improvement cycle." -->
 
-### Architecture Flow (visual summary)
-1. Operational Data Layer — WMS workflows, transactions, simulations, evaluations, SME knowledge
-2. Cognitive Gym — High-speed simulation mirroring operational workflows and APIs
-3. Training & Continuous Learning — SFT, DPO, reinforcement learning, evaluation harnesses
-4. Operational Agents — Reasoning + context + workflow execution + integrations
-5. Evaluation & Safety — Scenario replay, benchmarks, guardrails, human review
+### Process Steps (visual summary)
+1. Problem & Domain Specification — Define the job, success criteria, evaluation benchmarks
+2. Data Artifact Generation — 100% synthetic data from simulated training environments
+3. Model Training — Domain fine-tuning and preference alignment
+4. Model Evaluation & Go Live — Benchmarks, scenario replay, human review gates
+5. Continuous Improvement — Feedback loops generate new scenarios each iteration
 
-### 1. Operational Data Layer
-Operational intelligence requires operational data. The Model Factory uses multiple sources of operational context and workflow information to build operational realism and workflow diversity that allows models to generalize across different warehouse environments and scenarios.
+### 1. Problem and Domain Specification
+Define the supply-chain job to be done. Identify the specific workflow the agent must perform, establish success criteria, and build evaluation benchmarks. This step scopes the operational domain and sets measurable goals before any training begins.
 
-- Warehouse operational workflows
-- Transactional patterns
-- Simulation trajectories
-- Evaluation datasets
-- SME-guided operational examples
+- Define target workflow and operational scope
+- Establish success criteria and evaluation benchmarks
+- Identify required tool integrations and enterprise APIs
+- Document expected agent behaviors and edge cases
 
-### 2. Cognitive Gym
-A high-speed simulation environment that mirrors operational workflows and APIs without impacting production systems. The gym allows the team to move beyond static prompting into iterative operational systems training.
+### 2. Data Artifact Generation
+Generate high-quality training data using 100% synthetic data from simulated training environments. Create diverse operational scenarios that cover normal operations, edge cases, and failure modes — all without using customer data.
 
-- Rapid experimentation
-- Safe failure testing
-- Reinforcement learning
-- Trajectory generation
-- Repeatable evaluations
-- Scalable operational learning
+- 100% synthetic data generation
+- Simulated training environments mirroring operational workflows
+- Diverse scenario coverage including edge cases
+- Safe failure mode generation at scale
 
-<!-- explainer variant bullets add "episodes" and "at scale" qualifiers:
-- Reinforcement learning episodes
-- Trajectory generation at scale
--->
+### 3. Model Training
+Apply domain fine-tuning and preference alignment to specialize the model for supply chain execution. Domain fine-tuning teaches the model operational workflows and reasoning patterns. Preference alignment teaches the model to distinguish between good and bad approaches, ensuring it completes tasks the way Blue Yonder wants them completed.
 
-### 3. Training & Continuous Learning
-The Model Factory uses a layered learning approach to specialize models for supply chain execution. Rather than training frontier-scale foundation models from scratch, Blue Yonder builds on top of strong open-source foundation models and specializes them for operational workflows.
+- Domain fine-tuning on operational workflows
+- Preference alignment using good vs. bad response pairs
+- Reinforcement learning from simulated training environments
+- Training against failure modes and edge cases
 
-- Domain adaptation
-- Supervised Fine-Tuning (SFT)
-- Preference Optimization (DPO)
-- Reinforcement Learning
-- Evaluation Harnesses
-- Regression Testing
-- Continuous trajectory collection
+### 4. Model Evaluation and Go Live
+Run the model through repeated evaluation against benchmarks, scenario replay, and human review gates. Deploy only when quality thresholds are met. Evaluation is not an afterthought — it is a first-class component of the factory process.
 
-### 4. Operational Agents
-The output of the Model Factory is not a chatbot. It is an operational agent combining reasoning, operational context, workflow execution, and enterprise integrations into a unified operational system.
-
-- Understanding operational state
-- Investigating warehouse scenarios
-- Using enterprise tools and APIs
-- Executing structured workflows
-- Recommending operational actions
-- Supporting workflow automation
-
-### 5. Evaluation & Safety
-Evaluation is a first-class component of the Model Factory. Operational AI systems require measurable reliability, consistency, and safety. The goal is operational correctness and repeatability — not simply generating plausible answers.
-
-- Scenario replay
-- Benchmark suites
-- Automated evaluation pipelines
-- Human review
-- Regression testing
-- Confidence thresholds
+- Benchmark suites and regression testing
+- Scenario replay and automated evaluation pipelines
+- Human review gates and confidence thresholds
 - Guardrails and escalation mechanisms
 
-<!-- explainer variant combines first two bullets: "Scenario replay and benchmark suites" and uses "Human review gates" -->
+### 5. Continuous Improvement
+Every deployment creates training signal for the next iteration. Feedback loops from operational use generate new scenarios, identify gaps, and drive continuous model improvement. The system gets better with every cycle.
+
+- Operational feedback generates new training scenarios
+- Evaluation results loop back into data generation
+- Continuous trajectory collection and analysis
+- Each iteration expands coverage and improves quality
 
 ---
 
-## Section 04: Why This Matters
+## Section 04: Allocation Shorts Agent
 
 ### Intro
-The Model Factory enables Blue Yonder to move beyond static AI assistants toward operational intelligence systems. The long-term advantage does not come from prompts or a single model — it compounds from systems, data, and continuous learning.
-
-### Business Impact
-- Faster operational issue resolution
-- Workflow automation
-- Scalable operational expertise
-- Continuous capability improvement
-- Reduced operational overhead
-
-<!-- explainer variant has expanded descriptions:
-- **Faster resolution** — Operational issues investigated and resolved in minutes, not hours
-- **Workflow automation** — Multi-step processes executed end-to-end by agents
-- **Scalable expertise** — Operational knowledge available 24/7 across all sites
-- **Continuous improvement** — Every interaction makes the system better
-- **Reduced overhead** — Less manual investigation, more strategic decision-making
--->
-
-### Strategic Impact
-- Operational data flywheels
-- Domain expertise accumulation
-- Evaluation infrastructure
-- Simulation environments
-- Workflow integrations
-- Continuous learning systems
-
-<!-- explainer variant has expanded descriptions:
-- **Operational data flywheel** — Each deployment generates training signal
-- **Domain expertise accumulation** — Tacit knowledge captured systematically
-- **Evaluation infrastructure** — Measurable, repeatable quality standards
-- **Simulation environments** — Safe learning at scale
-- **Workflow integrations** — Deep enterprise system connectivity
-- **Continuous learning systems** — Always improving, never static
--->
-
-### Callout
-> Together, these create compounding operational intelligence over time. The advantage is not in a single model — it is in the system and flywheel around the model.
-
-### Levels of Autonomy
-The Model Factory enables progression toward higher levels of intelligent automation in supply chain.
-
-| Step | Label | Sublabel | Status |
-|---|---|---|---|
-| 1 | Chat | Q&A | done |
-| 2 | Copilots | Assisted | done |
-| 3 | Workflow | Execution | done |
-| 4 | Operational Agents | We are here | current |
-| 5 | Autonomous | Operations | future |
-
-<!-- explainer variant uses "Agents" instead of "Operational Agents" for step 4 label -->
-
-### Continuous Learning Flywheel
-The system continuously improves through evaluation and operational feedback loops.
-
-Center label: Learning Flywheel
-
-Nodes (clockwise):
-1. Operational Scenarios
-2. Trajectories
-3. Evaluation
-4. Fine-Tuning
-5. Deployment
-6. New Interactions
-7. More Scenarios
-
----
-
-## Section 05: First Example — Allocation Shorts Agent
-
-### Intro
-The first operational agent built using the Model Factory addresses one of the most common and time-consuming warehouse challenges: investigating allocation shortages.
+The first specialized agent built using the Model Factory addresses one of the most common and time-consuming warehouse challenges: investigating allocation shortages.
 
 ### Tag
 Warehouse Operations
@@ -304,307 +241,88 @@ And adds intro text: "The same Model Factory infrastructure supports building ag
 
 ---
 
-## Section 06: Sales Enablement
-
-### Intro
-Resources and materials structured for pre-sales teams to effectively demonstrate, explain, and position the Model Factory during customer engagements.
-
-<!-- explainer variant intro: "Structured resources for pre-sales teams to demonstrate, explain, and position the Model Factory during customer engagements." -->
-
-### Track 1: Capability Walkthrough
-Slides walking through core capabilities, positioned for business and technical audiences.
-
-- What the Model Factory is and why it matters
-- Architecture overview (5 components)
-- Generic AI vs Operational AI positioning
-- Levels of autonomy progression
-- First agent use case demo flow
-
-Tip: Press **P** on this page to enter presentation mode.
-
-### Track 2: Functionality Deep Dive
-Detailed list of new functionality, configuration guidance, and targeted business use cases.
-
-- Operational Agent capabilities and tool use
-- Cognitive Gym simulation environment
-- Evaluation and benchmarking pipelines
-- Continuous learning and feedback loops
-- Enterprise API integration patterns
-
-Placeholder: [Screenshot placeholders — to be populated by team with execution examples]
-
-### Track 3: Demo Access
-Working demonstrations accessible in demo environments with pre-configured data for example executions.
-
-- Demo environment access and credentials
-- Pre-configured scenarios to walk through
-- Step-by-step guide for driving example executions
-- Data ingestion setup and sample datasets
-
-Placeholder: [Demo environment details — TBD by team. Ideally in standard demo envs, separate env if needed.]
-
-### Track 4: Limitations & Roadmap
-Known limitations, pitfalls to watch for, and future directions for the Model Factory initiative.
-
-- **Current scope:** Warehouse operations focus (WMS-centric)
-- **Data dependency:** Quality of operational data directly impacts agent performance
-- **Human oversight:** Agents augment operators, not replace them
-- **Evaluation maturity:** Benchmark suites expanding continuously
-
-#### Future Directions
-- World models for supply chain simulation
-- Autonomy labs for advanced agent research
-- Expanded domain coverage beyond warehouse
-- Cross-environment generalization improvements
-
-<!-- explainer variant Track 4 is condensed:
-- **Current scope:** WMS-centric warehouse operations
-- **Data dependency:** Quality impacts agent performance
-- **Human oversight:** Agents augment, not replace
-- **Future:** World models, autonomy labs, expanded domains
--->
-
----
-
-## Section 07: Questions & Answers
+## Section 05: Questions & Answers
 
 ### Tab: Fundamentals
 
 #### Q1: What exactly is a "Model Factory"?
-A model factory is a repeatable system for building, evaluating, improving, and deploying AI capabilities at scale. Key aspects include:
-
-- Continuous data ingestion
-- Simulation and trajectory generation
-- Evaluation and benchmarking
-- Fine-tuning and reinforcement learning
-- Operational deployment and monitoring
-
-The goal is not to build one-off models, but to create a scalable capability production system for supply chain AI.
-
-<!-- explainer variant is a single paragraph: "A repeatable system for building, evaluating, improving, and deploying AI capabilities at scale. It includes continuous data ingestion, simulation and trajectory generation, evaluation and benchmarking, fine-tuning and reinforcement learning, and operational deployment and monitoring. The goal is not one-off models, but a scalable capability production system." -->
+A repeatable system for building, evaluating, improving, and deploying AI capabilities at scale. It includes continuous data generation, simulated training environments, evaluation and benchmarking, domain fine-tuning and preference alignment, and operational deployment with monitoring. The goal is not one-off models, but a scalable capability production system for supply chain AI.
 
 #### Q2: Why does supply chain need specialized AI models?
-General-purpose models are very strong at language understanding, but supply chain operations require:
-
-- Deep operational context
-- Structured reasoning
-- Workflow execution
-- Tool orchestration
-- Consistent and auditable decision-making
-
-We specialize models for warehouse and supply chain execution to improve operational correctness, reliability, and business value.
+General-purpose models are strong at language understanding, but supply chain operations require deep operational context, structured reasoning, workflow execution, tool orchestration, and consistent auditable decision-making. We specialize models for warehouse and supply chain execution to improve operational correctness, reliability, and business value.
 
 #### Q3: How is this different from simple RAG or chatbot systems?
-RAG retrieves information from documents. Our approach goes significantly further:
-
-- Operational reasoning
-- Multi-step planning
-- Tool execution
-- Workflow automation
-- Learning from operational trajectories
-- Continuous improvement through evaluation loops
-
-We are building operational agents, not document chatbots.
+RAG retrieves information from documents. Our approach goes significantly further — operational reasoning, multi-step planning, tool execution, workflow automation, and continuous improvement through evaluation loops. We are building specialized agents, not document chatbots.
 
 ### Tab: Technical Approach
 
 #### Q4: How exactly do you train your models?
-We use a layered training approach:
-
-- Frontier foundation models as base intelligence
-- Domain adaptation using warehouse workflows
-- Supervised Fine-Tuning (SFT)
-- Preference optimization (DPO)
-- Reinforcement learning using simulation environments ("gym")
-
-The models continuously improve through evaluation feedback and operational learning loops.
+We use a layered training approach: frontier foundation models as base intelligence, domain adaptation using warehouse workflows, domain fine-tuning on operational procedures and reasoning patterns, preference alignment to ensure the model completes tasks the way Blue Yonder wants, and reinforcement learning using simulated training environments. The models continuously improve through evaluation feedback and operational learning loops.
 
 #### Q5: Are you training foundation models from scratch?
-No — we are not training frontier-scale foundation models completely from scratch. Instead, we build on top of strong open-source foundation models and specialize them for supply chain and warehouse operations. Our focus is on:
-
-- Domain adaptation
-- Supervised Fine-Tuning (SFT)
-- Preference optimization (DPO)
-- Reinforcement learning approaches
-- Operational evaluation and feedback loops
-
-This allows us to leverage the massive investment already made in general-purpose intelligence while focusing our efforts on operational reasoning, workflow execution, and enterprise-specific capabilities.
+No. We build on top of strong open-source foundation models and specialize them for supply chain and warehouse operations through domain fine-tuning, preference alignment, and reinforcement learning. This lets us leverage the massive investment already made in general-purpose intelligence while focusing on operational reasoning, workflow execution, and enterprise-specific capabilities.
 
 #### Q6: What role does reinforcement learning play?
-Reinforcement learning helps the model improve decision-making through simulation. The "gym" environment allows us to:
+Reinforcement learning helps the model improve decision-making through simulation. Simulated training environments allow us to run scenarios safely, test many operational variations quickly, reward successful task execution, and improve agent behavior iteratively — all without impacting production systems.
 
-- Run scenarios safely
-- Test many operational variations quickly
-- Reward successful task execution
-- Improve agent behavior iteratively
+#### Q7: What is domain fine-tuning?
+Domain fine-tuning teaches the model how a business domain actually operates. Rather than just learning terminology, the model learns how workflows decompose, how operational decisions are made, what context matters, and how actions should be executed safely. It is the process that turns a general-purpose model into one that reasons like an experienced supply chain professional.
 
-This enables scalable learning without impacting production systems.
+#### Q8: What is preference alignment?
+After domain fine-tuning gives the model basic operational competence, preference alignment teaches it to distinguish between good and bad approaches. Using pairs of example responses, the model learns which investigation strategies are more thorough, which recommendations are more actionable, and which communication styles are more appropriate for operational contexts. This ensures the model completes tasks the way Blue Yonder wants them completed.
 
-#### Q13: Can you explain the architecture in a few sentences?
-The architecture combines:
-
-- A simulation environment ("gym")
-- Operational APIs and tool interfaces
-- Data flywheel pipelines
-- Evaluation harnesses
-- Fine-tuning and RL pipelines
-
-Together, this creates a closed-loop learning system for warehouse operations.
-
-#### Q14: What is the purpose of the "gym"?
-The gym is a fast, safe simulation environment that mirrors warehouse operations. It enables:
-
-- Rapid experimentation
-- Trajectory generation
-- Reinforcement learning
-- Failure testing
-- Repeatable evaluations
-
-This allows scalable learning without impacting production systems.
+#### Q9: Can you explain the architecture in a few sentences?
+The Model Factory is a five-step cycle: define the problem and domain, generate synthetic training data from simulated environments, train the model using domain fine-tuning and preference alignment, evaluate against benchmarks and human review, then deploy and collect feedback for continuous improvement. Each cycle makes the model better.
 
 ### Tab: Data & Privacy
 
-#### Q7: Where does the training data come from?
-Our agentic Operator models are training with 100% synthetic data. The data comes from multiple sources:
+#### Q10: Where does the training data come from?
+Our agentic Operator models train with 100% synthetic data. Data is generated from simulated training environments that mirror warehouse operational workflows, transactional patterns, and diverse operational scenarios. All data generation follows governance controls and does not use customer production data.
 
-- Warehouse operational workflows
-- Transactional patterns
-- Simulation trajectories
-- SME-guided examples
-- Evaluation datasets
+#### Q11: How do you handle privacy and customer data governance?
+Governance is a first-class concern. Key controls include contractually permitted usage only, region-aware storage and processing, internal R&D environments only, and controlled access and retention policies.
 
-All customer data usage follows contractual permissions and governance controls.
-
-#### Q8: How do you handle privacy and customer data governance?
-Governance is a critical part of the initiative. Key controls include:
-
-- Contractually permitted usage only
-- Region-aware storage and processing
-- Internal R&D environments only
-- Controlled access and retention policies
-
-We treat governance as a first-class concern, not an afterthought.
-
-#### Q9: How much synthetic vs. real data do you use?
-Both are important and serve different purposes.
-
-**Real data provides:**
-- Operational realism
-- True workflow patterns
-- Real-world edge cases
-
-**Synthetic and simulated data helps:**
-- Expand coverage
-- Generate rare scenarios
-- Scale training safely
-
-The combination allows us to balance realism and scalability.
+#### Q12: How much synthetic vs. real data do you use?
+Our specialized agent models are trained on 100% synthetic data generated from simulated training environments. This allows us to generate diverse operational scenarios, cover rare edge cases, and scale training safely — all without dependency on customer production data.
 
 ### Tab: Human Expertise
 
-#### Q10: How do you ingest expertise from SMEs?
-We capture expertise through:
+#### Q13: How do you ingest expertise from SMEs?
+We capture expertise through workflow walkthroughs, operational demonstrations, meeting transcripts, human feedback loops, evaluation reviews, and trajectory correction. The goal is to convert tacit operational knowledge into reusable training and evaluation signals.
 
-- Workflow walkthroughs
-- Operational demonstrations
-- Meeting transcripts
-- Human feedback loops
-- Evaluation reviews
-- Trajectory correction
+#### Q14: How do you capture tacit operational knowledge?
+A large part of warehouse expertise is not documented explicitly. We learn this through observing operational decisions, comparing successful vs. unsuccessful workflows, capturing repeated expert patterns, and feeding corrections back into the training cycle. Over time, the system accumulates operational knowledge and decision patterns.
 
-The goal is to convert tacit operational knowledge into reusable training and evaluation signals.
-
-#### Q11: How do you capture tacit operational knowledge?
-A large part of warehouse expertise is not documented explicitly. We learn this through:
-
-- Observing operational decisions
-- Comparing successful vs. unsuccessful workflows
-- Capturing repeated expert patterns
-- Feeding corrections back into the flywheel
-
-Over time, the system accumulates operational knowledge and decision patterns.
-
-#### Q12: What role do human operators still play?
-Human expertise remains essential. SMEs provide:
-
-- Workflow understanding
-- Evaluation feedback
-- Exception handling
-- Operational policy guidance
-- Validation of model behavior
-
-The goal is augmentation and scalability of expertise, not removal of human oversight.
+#### Q15: What role do human operators still play?
+Human expertise remains essential. SMEs provide workflow understanding, evaluation feedback, exception handling, operational policy guidance, and validation of model behavior. The goal is augmentation and scalability of expertise, not removal of human oversight.
 
 ### Tab: Evaluation & Safety
 
-#### Q15: How do you evaluate success?
-We evaluate across multiple dimensions:
+#### Q16: How do you evaluate success?
+We evaluate across multiple dimensions: operational correctness, scenario completion, tool-use accuracy, consistency, latency, human evaluation, and benchmark and regression suites. The focus is operational reliability, not just conversational quality.
 
-- Operational correctness
-- Scenario completion
-- Tool-use accuracy
-- Consistency
-- Latency
-- Human evaluation
-- Benchmark and regression suites
+#### Q17: How do you avoid overfitting to one warehouse or customer?
+Generalization is a key design principle. We address this through diverse operational patterns, simulation variability, cross-environment evaluation, and synthetic scenario expansion. The goal is reusable operational intelligence, not customer-specific memorization.
 
-The focus is operational reliability, not just conversational quality.
-
-#### Q16: How do you avoid overfitting to one warehouse or customer?
-Generalization is a key design principle. We address this through:
-
-- Diverse operational patterns
-- Simulation variability
-- Cross-environment evaluation
-- Synthetic scenario expansion
-
-The goal is reusable operational intelligence, not customer-specific memorization.
-
-#### Q19: What happens when the model is wrong?
-Enterprise AI systems require guardrails and controlled autonomy. Key mechanisms include:
-
-- Scoped permissions
-- Human escalation paths
-- Confidence thresholds
-- Auditability
-- Evaluation gates
-- Safe fallback behavior
-
-The system is designed to operate safely within defined boundaries.
+#### Q18: What happens when the model is wrong?
+Enterprise AI systems require guardrails and controlled autonomy. Key mechanisms include scoped permissions, human escalation paths, confidence thresholds, auditability, evaluation gates, and safe fallback behavior. The system operates safely within defined boundaries.
 
 ### Tab: Strategic Positioning
 
-#### Q17: What makes Blue Yonder uniquely positioned for this?
-Blue Yonder combines:
+#### Q19: What makes Blue Yonder uniquely positioned for this?
+Blue Yonder combines deep supply chain expertise, a large operational customer footprint, real execution system integration, historical operational data, and existing workflow understanding. This creates a strong foundation for specialized AI systems.
 
-- Deep supply chain expertise
-- Large operational customer footprint
-- Real execution system integration
-- Historical operational data
-- Existing workflow understanding
+#### Q20: What is the long-term moat?
+The moat is not prompts or a single model. It comes from the operational data flywheel, accumulated domain expertise, evaluation infrastructure, workflow integrations, simulated training environments, and continuous learning systems. Together, these create compounding advantages over time — the advantage is in the system and flywheel around the model.
 
-This creates a strong foundation for operational AI systems.
+#### Q21: Why not just use OpenAI directly?
+Frontier models provide strong general intelligence, but our differentiation comes from operational context, workflow orchestration, domain specialization through fine-tuning and preference alignment, tool integrations, evaluation infrastructure, and continuous operational learning. The value is in the system and flywheel around the model.
 
-#### Q18: What is the long-term moat?
-The moat is not prompts or a single model. The moat comes from:
+#### Q22: What business impact does the Model Factory enable?
+The Model Factory enables faster operational issue resolution, workflow automation, scalable operational expertise available 24/7 across all sites, continuous capability improvement where every interaction makes the system better, and reduced operational overhead through less manual investigation and more strategic decision-making.
 
-- Operational data flywheel
-- Domain expertise
-- Evaluation infrastructure
-- Workflow integrations
-- Simulation environments
-- Continuous learning systems
+#### Q23: What are the levels of AI autonomy in supply chain?
+The Model Factory enables progression through five levels: Chat (Q&A), Copilots (assisted workflows), Workflow Execution (automated processes), Specialized Agents (where we are today), and ultimately Autonomous Operations. Each level builds on the capabilities established by the previous one.
 
-This creates compounding advantages over time.
-
-#### Q20: Why not just use OpenAI directly?
-Frontier models provide strong general intelligence. Our differentiation comes from:
-
-- Operational context
-- Workflow orchestration
-- Domain specialization
-- Tool integrations
-- Evaluation infrastructure
-- Continuous operational learning
-
-The value is in the system and flywheel around the model.
+#### Q24: How does continuous learning work?
+The system continuously improves through a flywheel: operational scenarios generate trajectories, which are evaluated, used for fine-tuning, deployed, and then new interactions create more scenarios. Each cycle expands coverage and improves quality. The long-term advantage compounds from this system, not from any single model.
