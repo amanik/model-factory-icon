@@ -371,7 +371,7 @@ section:last-of-type { border-bottom: none; }
 .process-steps {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 16px;
   margin: 32px 0;
   counter-reset: step;
 }
@@ -379,18 +379,23 @@ section:last-of-type { border-bottom: none; }
   background: var(--byx-card);
   border: 1.5px solid var(--byx-200);
   border-radius: var(--r-card);
-  padding: 24px 24px 24px 64px;
-  margin-bottom: -1px;
-  position: relative;
   counter-increment: step;
+  overflow: hidden;
 }
-.process-step::before {
+.process-step summary {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  gap: 16px;
+}
+.process-step summary::-webkit-details-marker { display: none; }
+.process-step summary::before {
   content: counter(step);
-  position: absolute;
-  left: 20px;
-  top: 24px;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: var(--byx-indigo);
   color: #fff;
@@ -399,24 +404,35 @@ section:last-of-type { border-bottom: none; }
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
-.process-step:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 33px;
-  bottom: -2px;
-  width: 2px;
-  height: 4px;
-  background: var(--byx-indigo);
-  z-index: 1;
+.process-step summary::after {
+  content: '›';
+  margin-left: auto;
+  font-size: 20px;
+  color: var(--byx-400);
+  transition: transform 200ms;
+  flex-shrink: 0;
 }
-.process-step h4 {
+.process-step[open] summary::after {
+  transform: rotate(90deg);
+  color: var(--byx-indigo);
+}
+.process-step summary h4 {
   font-size: 15px;
   font-weight: 600;
   color: var(--byx-800);
-  margin-bottom: 8px;
+  margin: 0;
 }
-.process-step p { font-size: 14px; margin-bottom: 10px; color: var(--byx-600); line-height: 1.6; }
+.process-step .step-body {
+  padding: 0 24px 20px 70px;
+}
+.process-step .step-body p {
+  font-size: 14px;
+  color: var(--byx-600);
+  line-height: 1.7;
+  margin: 0;
+}
 
 /* ═══════════════════════════════════════════════
    CAPABILITY GRID (Section 02 — domain fine-tuning)
@@ -950,21 +966,26 @@ body.slide-mode .site-footer { display: none; }
   <p data-section="section-03" data-sub="intro" class="sec-intro"></p>
 
   <div class="process-steps">
-    <div class="process-step" data-section="section-03" data-sub="1-problem-and-domain-specification">
-      <h4>Problem and Domain Specification</h4>
-    </div>
-    <div class="process-step" data-section="section-03" data-sub="2-data-artifact-generation">
-      <h4>Data Artifact Generation</h4>
-    </div>
-    <div class="process-step" data-section="section-03" data-sub="3-model-training">
-      <h4>Model Training</h4>
-    </div>
-    <div class="process-step" data-section="section-03" data-sub="4-model-evaluation-and-go-live">
-      <h4>Model Evaluation and Go Live</h4>
-    </div>
-    <div class="process-step" data-section="section-03" data-sub="5-continuous-improvement">
-      <h4>Continuous Improvement</h4>
-    </div>
+    <details class="process-step" open data-section="section-03" data-sub="1-problem-and-domain-specification">
+      <summary><h4>Problem and Domain Specification</h4></summary>
+      <div class="step-body"></div>
+    </details>
+    <details class="process-step" data-section="section-03" data-sub="2-data-artifact-generation">
+      <summary><h4>Data Artifact Generation</h4></summary>
+      <div class="step-body"></div>
+    </details>
+    <details class="process-step" data-section="section-03" data-sub="3-model-training">
+      <summary><h4>Model Training</h4></summary>
+      <div class="step-body"></div>
+    </details>
+    <details class="process-step" data-section="section-03" data-sub="4-model-evaluation-and-go-live">
+      <summary><h4>Model Evaluation and Go Live</h4></summary>
+      <div class="step-body"></div>
+    </details>
+    <details class="process-step" data-section="section-03" data-sub="5-continuous-improvement">
+      <summary><h4>Continuous Improvement</h4></summary>
+      <div class="step-body"></div>
+    </details>
   </div>
 </section>
 
@@ -1117,10 +1138,12 @@ function injectContent(sections) {
     if (el.classList.contains('arch-diagram')) return;
     if (el.classList.contains('agent-flow')) return;
 
-    // Process step cards: append content after existing children
+    // Process step details: inject into .step-body
     if (el.classList.contains('process-step')) {
-      var rendered = marked.parse(content);
-      el.insertAdjacentHTML('beforeend', rendered);
+      var body = el.querySelector('.step-body');
+      if (body) {
+        body.innerHTML = marked.parse(content);
+      }
       return;
     }
 
