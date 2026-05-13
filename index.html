@@ -143,6 +143,19 @@ button { font-family: var(--sans); cursor: pointer; }
   max-width: 540px;
 }
 
+/* Hero wave animation */
+.hero-wave {
+  margin-top: 36px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(54, 96, 189, 0.018);
+}
+.hero-wave canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Hero pipeline diagram */
 .factory-flow {
   display: flex;
@@ -841,6 +854,7 @@ body.slide-mode .site-footer { display: none; }
   .masthead h1 { font-size: 32px; }
 }
 @media (max-width: 640px) {
+  .hero-wave { margin-top: 24px; border-radius: 12px; }
   .wrap { padding: 0 20px 80px; }
   .masthead { padding: 28px 0 36px; }
   .masthead h1 { font-size: 26px; }
@@ -886,6 +900,7 @@ body.slide-mode .site-footer { display: none; }
   body { font-size: 13px; }
   .masthead h1 { font-size: 32px; }
   .sec-head h2 { font-size: 22px; }
+  .hero-wave { display: none; }
 }
 </style>
 </head>
@@ -920,6 +935,9 @@ body.slide-mode .site-footer { display: none; }
       <div class="feedback-line"></div>
       <span class="feedback-label" data-stage="feedback"></span>
     </div>
+  </div>
+  <div class="hero-wave">
+    <canvas id="hero-waves" width="1920" height="420"></canvas>
   </div>
 </header>
 
@@ -1152,6 +1170,67 @@ body.slide-mode .site-footer { display: none; }
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+/* ═══════════════════════════════════════════════
+   HERO WAVE ANIMATION
+   ═══════════════════════════════════════════════ */
+(function() {
+  var canvas = document.getElementById('hero-waves');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width;
+  var H = canvas.height;
+  var t = 0;
+
+  var ribbons = [
+    { color:{r:54,g:96,b:189}, lines:16, tiltStart:H*0.88, tiltEnd:H*0.05,
+      amplitude:90, frequency:0.003, speed:0.015, lineSpacing:4.0,
+      phaseSpread:0.07, opacity:0.6, lineWidth:1.6 },
+    { color:{r:90,g:145,b:225}, lines:14, tiltStart:H*0.02, tiltEnd:H*0.85,
+      amplitude:78, frequency:0.0026, speed:-0.012, lineSpacing:3.8,
+      phaseSpread:0.09, opacity:0.50, lineWidth:1.5 },
+    { color:{r:35,g:60,b:130}, lines:11, tiltStart:H*0.60, tiltEnd:H*0.40,
+      amplitude:58, frequency:0.002, speed:0.009, lineSpacing:3.2,
+      phaseSpread:0.11, opacity:0.30, lineWidth:1.3 }
+  ];
+
+  function drawLine(r, i, time) {
+    var phase = i * r.phaseSpread;
+    var off = (i - r.lines / 2) * r.lineSpacing;
+    ctx.beginPath();
+    for (var x = -10; x <= W + 10; x += 3) {
+      var p = x / W; var ep = p * p * (3 - 2 * p);
+      var by = r.tiltStart + (r.tiltEnd - r.tiltStart) * ep + off;
+      var w1 = Math.sin(x * r.frequency + time * r.speed + phase) * r.amplitude;
+      var w2 = Math.sin(x * r.frequency * 2.1 + time * r.speed * 0.5 + phase * 1.6) * (r.amplitude * 0.2);
+      var w3 = Math.sin(x * r.frequency * 0.4 + time * r.speed * 0.18 + phase * 0.5) * (r.amplitude * 0.15);
+      var y = by + w1 + w2 + w3;
+      if (x === -10) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    var center = r.lines / 2;
+    var dist = Math.abs(i - center) / center;
+    var alpha = r.opacity * (1 - dist * 0.6);
+    if (alpha < 0.06) alpha = 0.06;
+    ctx.strokeStyle = 'rgba(' + r.color.r + ',' + r.color.g + ',' + r.color.b + ',' + alpha.toFixed(3) + ')';
+    ctx.lineWidth = r.lineWidth;
+    ctx.stroke();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    var grad = ctx.createRadialGradient(W*0.48, H*0.48, 0, W*0.48, H*0.48, W*0.42);
+    grad.addColorStop(0, 'rgba(54,96,189,0.04)');
+    grad.addColorStop(1, 'rgba(54,96,189,0.0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+    for (var ri = 0; ri < ribbons.length; ri++) {
+      for (var i = 0; i < ribbons[ri].lines; i++) drawLine(ribbons[ri], i, t);
+    }
+    t += 1;
+    requestAnimationFrame(render);
+  }
+  render();
+})();
+
 /* ═══════════════════════════════════════════════
    CONTENT LOADER — fetches content.md and injects
    ═══════════════════════════════════════════════ */
