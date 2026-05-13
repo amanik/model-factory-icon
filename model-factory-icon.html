@@ -26,11 +26,7 @@
   --byx-700: #374151;
   --byx-800: #1f2937;
   --byx-900: #111827;
-  --byx-950: #060500;
 
-  --byx-success:  #10b981;
-  --byx-warning:  #f59e0b;
-  --byx-critical: #e11d48;
   --byx-card:     #ffffff;
   --byx-card-alt: #f9f9fb;
 
@@ -38,10 +34,6 @@
 
   --shadow-2: 0 1px 4px rgba(0,0,50,0.09), 0 2px 1px -1px rgba(0,0,0,0.05);
   --shadow-3: 0 3px 12px -4px rgba(0,0,0,0.1), 0 4px 16px -8px rgba(0,0,0,0.08);
-  --shadow-4: 0 8px 40px rgba(0,0,0,0.05), 0 12px 32px -16px rgba(0,0,50,0.05);
-
-  --r1: 3px;
-  --r2: 4px;
   --r4: 8px;
   --r-pill: 999px;
   --r-card: 12px;
@@ -151,19 +143,6 @@ button { font-family: var(--sans); cursor: pointer; }
   display: block;
   width: 100%;
   height: auto;
-}
-
-/* (factory-flow removed — hero uses wave animation instead) */
-.feedback-line {
-  position: absolute;
-  right: -16px;
-  top: 8%;
-  bottom: 8%;
-  width: 16px;
-  border-right: 1.5px dashed rgba(54,96,189,0.35);
-  border-top: 1.5px dashed rgba(54,96,189,0.35);
-  border-bottom: 1.5px dashed rgba(54,96,189,0.35);
-  border-radius: 0 8px 8px 0;
 }
 
 /* ═══════════════════════════════════════════════
@@ -732,7 +711,7 @@ section:last-of-type { border-bottom: none; }
   font-size: 12px;
   color: var(--byx-400);
 }
-.site-footer .footer-logo { height: 20px; margin: 0 auto 12px; opacity: 0.4; }
+.site-footer .footer-logo { height: 24px; width: auto; margin: 0 auto 12px; opacity: 0.4; }
 
 /* ═══════════════════════════════════════════════
    PRESENTATION MODE
@@ -883,9 +862,66 @@ body.slide-mode .pslide { display: none; }
   .sec-head h2 { font-size: 22px; }
   .hero-wave { display: none; }
 }
+
+/* ═══════════════════════════════════════════════
+   PASSWORD GATE
+   ═══════════════════════════════════════════════ */
+.pw-gate {
+  position: fixed; inset: 0; z-index: 99999;
+  background: #fcfcfd;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+.pw-gate.hidden { display: none; }
+.pw-box {
+  text-align: center; max-width: 360px; padding: 0 24px;
+}
+.pw-box img {
+  height: 32px; width: auto; margin-bottom: 32px; opacity: 0.7;
+}
+.pw-box h1 {
+  font-size: 20px; font-weight: 700; color: var(--byx-800); margin: 0 0 6px;
+}
+.pw-box p {
+  font-size: 14px; color: var(--byx-500); margin: 0 0 28px; line-height: 1.5;
+}
+.pw-box input {
+  width: 100%; padding: 12px 16px; border: 1.5px solid var(--byx-300);
+  border-radius: 10px; font-size: 15px; font-family: inherit;
+  text-align: center; letter-spacing: 2px; outline: none;
+  transition: border-color 0.2s;
+}
+.pw-box input:focus { border-color: var(--byx-indigo); }
+.pw-box input.pw-error {
+  border-color: #e05252; animation: pw-shake 0.35s ease;
+}
+.pw-box .pw-hint {
+  font-size: 12px; color: #e05252; margin-top: 10px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.pw-box .pw-hint.visible { opacity: 1; }
+@keyframes pw-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+body.pw-locked .wrap,
+body.pw-locked .slide-toggle,
+body.pw-locked .slide-counter,
+body.pw-locked .toc { visibility: hidden; }
 </style>
 </head>
-<body>
+<body class="pw-locked">
+
+<div class="pw-gate" id="pwGate">
+  <div class="pw-box">
+    <img src="https://edge.sitecorecloud.io/blueyonderie8e6-corporateefb0-prod6ccb-be06/media/project/blueyonder/shared/default-images/logo-blue.png" alt="Blue Yonder">
+    <h1>Model Training Factory</h1>
+    <p>Enter the access code to continue</p>
+    <input type="password" id="pwInput" placeholder="Access code" autocomplete="off" spellcheck="false">
+    <div class="pw-hint" id="pwHint">Incorrect code — please try again</div>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -915,7 +951,7 @@ body.slide-mode .pslide { display: none; }
   <a href="#why-not-generic">Why Generic AI Fails</a>
   <a href="#model-factory-process">How It Builds a Model <span class="n">5</span></a>
   <a href="#allocation-shorts">Allocation Shorts</a>
-  <a href="#qa">Q&amp;A <span class="n">22</span></a>
+  <a href="#qa">Q&amp;A <span class="n">20</span></a>
 </nav>
 
 <!-- ═══════════════════════════════════════════
@@ -990,7 +1026,6 @@ body.slide-mode .pslide { display: none; }
     <div class="content-block">
       <div data-section="section-01" data-sub="agent-capabilities"></div>
       <div data-section="section-01" data-sub="callout" class="callout"></div>
-      <div data-section="section-01" data-sub="how-does-the-model-training-process-work"></div>
     </div>
   </div>
 
@@ -1122,7 +1157,7 @@ body.slide-mode .pslide { display: none; }
   <div class="sec-head">
     <span class="idx">05</span>
     <h2>Questions &amp; Answers</h2>
-    <span class="count">22 questions</span>
+    <span class="count">20 questions</span>
   </div>
 
   <div class="qa-tabs" role="tablist">
@@ -1138,8 +1173,8 @@ body.slide-mode .pslide { display: none; }
 
 <!-- Footer -->
 <footer class="site-footer">
-  <img src="https://edge.sitecorecloud.io/blueyonderie8e6-corporateefb0-prod6ccb-be06/media/project/blueyonder/shared/default-images/logo-blue.png" alt="Blue Yonder" class="footer-logo" width="100">
-  <p>Model Training Factory &mdash; ICON 2026 Sales Enablement</p>
+  <img src="https://edge.sitecorecloud.io/blueyonderie8e6-corporateefb0-prod6ccb-be06/media/project/blueyonder/shared/default-images/logo-blue.png" alt="Blue Yonder" class="footer-logo">
+  <p>ICON 2026</p>
 </footer>
 
 <!-- Present button -->
@@ -1985,6 +2020,45 @@ async function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+/* ── Password gate ── */
+(function() {
+  var HASH = '88fd6923c656e5677707380917abcf805feb0c5ed198d435a4f139501741397f';
+  var KEY  = 'mf_authed';
+
+  function sha256(str) {
+    var buf = new TextEncoder().encode(str);
+    return crypto.subtle.digest('SHA-256', buf).then(function(h) {
+      return Array.from(new Uint8Array(h)).map(function(b) {
+        return b.toString(16).padStart(2, '0');
+      }).join('');
+    });
+  }
+
+  function unlock() {
+    document.getElementById('pwGate').classList.add('hidden');
+    document.body.classList.remove('pw-locked');
+    sessionStorage.setItem(KEY, '1');
+  }
+
+  if (sessionStorage.getItem(KEY) === '1') { unlock(); return; }
+
+  var input = document.getElementById('pwInput');
+  var hint  = document.getElementById('pwHint');
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    sha256(input.value.trim()).then(function(h) {
+      if (h === HASH) {
+        unlock();
+      } else {
+        input.classList.add('pw-error');
+        hint.classList.add('visible');
+        setTimeout(function() { input.classList.remove('pw-error'); }, 400);
+      }
+    });
+  });
+})();
 </script>
 </body>
 </html>

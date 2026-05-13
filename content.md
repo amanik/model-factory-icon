@@ -21,7 +21,7 @@
 - title: The Model Training Factory
 - subtitle: Blue Yonder AI Platform
 - conference: ICON 2026
-- footer: Model Training Factory — ICON 2026 Sales Enablement
+- footer: ICON 2026
 
 <!-- explainer variant title: "How the Model Training Factory works" -->
 <!-- explainer variant eyebrow: "Blue Yonder AI Platform · sales enablement" -->
@@ -279,52 +279,46 @@ Three architecture patterns show how specialized and frontier models work togeth
 ### Tab: Data & Privacy
 
 #### Q8: Where does the training data come from?
-Our agentic Operator models train with 100% synthetic data. Data is generated from simulated training environments that mirror warehouse operational workflows, transactional patterns, and diverse operational scenarios. All data generation follows governance controls and does not use customer production data.
+Our agentic Operator models train with 100% synthetic data generated from simulated training environments that mirror warehouse operational workflows, transactional patterns, and diverse operational scenarios. This allows us to generate diverse scenarios, cover rare edge cases, and scale training safely — all without dependency on customer production data.
 
 #### Q9: How do you handle privacy and customer data governance?
-Governance is a first-class concern. Key controls include contractually permitted usage only, region-aware storage and processing, internal R&D environments only, and controlled access and retention policies.
-
-#### Q10: How much synthetic vs. real data do you use?
-Our specialized agent models are trained on 100% synthetic data generated from simulated training environments. This allows us to generate diverse operational scenarios, cover rare edge cases, and scale training safely — all without dependency on customer production data.
+Privacy and customer data governance are treated as core design requirements for supported AI capabilities. Key controls include contractually permitted usage, data minimization, role-based and least-privilege access controls, region-aware storage and processing, retention controls, and restricted access to secure development, testing, and support environments. Blue Yonder avoids including PII in AI models unless it is necessary for the use case, permitted, and subject to appropriate privacy and security controls. Where appropriate, Blue Yonder also uses anonymization or de-identification for data used in development, testing, analytics, or support activities. AI capabilities are governed through Blue Yonder security, privacy, and Responsible AI processes.
 
 ### Tab: Human Expertise
 
-#### Q11: How do you ingest expertise from SMEs?
-We capture expertise through workflow walkthroughs, operational demonstrations, meeting transcripts, human feedback loops, evaluation reviews, and trajectory correction. The goal is to convert tacit operational knowledge into reusable training and evaluation signals.
+#### Q10: How do you capture and use SME expertise?
+We capture expertise through workflow walkthroughs, operational demonstrations, human feedback loops, evaluation reviews, and trajectory correction. Much of warehouse expertise is tacit — not explicitly documented — so we also learn by observing operational decisions, comparing successful vs. unsuccessful workflows, and feeding corrections back into training. Over time, the system accumulates operational knowledge and decision patterns as reusable training signals.
 
-#### Q12: How do you capture tacit operational knowledge?
-A large part of warehouse expertise is not documented explicitly. We learn this through observing operational decisions, comparing successful vs. unsuccessful workflows, capturing repeated expert patterns, and feeding corrections back into the training cycle. Over time, the system accumulates operational knowledge and decision patterns.
-
-#### Q13: What role do human operators still play?
+#### Q11: What role do human operators still play?
 Human expertise remains essential. SMEs provide workflow understanding, evaluation feedback, exception handling, operational policy guidance, and validation of model behavior. The goal is augmentation and scalability of expertise, not removal of human oversight.
 
 ### Tab: Evaluation & Safety
 
-#### Q14: How do you evaluate success?
+#### Q12: How do you evaluate success?
 We evaluate across multiple dimensions: operational correctness, scenario completion, tool-use accuracy, consistency, latency, human evaluation, and benchmark and regression suites. The focus is operational reliability, not just conversational quality.
 
-#### Q15: How do you avoid overfitting to one warehouse or customer?
+#### Q13: How do you avoid overfitting to one warehouse or customer?
 Generalization is a key design principle. We address this through diverse operational patterns, simulation variability, cross-environment evaluation, and synthetic scenario expansion. The goal is reusable operational intelligence, not customer-specific memorization.
 
-#### Q16: What happens when the model is wrong?
+#### Q14: What happens when the model is wrong?
 Enterprise AI systems require guardrails and controlled autonomy. Key mechanisms include scoped permissions, human escalation paths, confidence thresholds, auditability, evaluation gates, and safe fallback behavior. The system operates safely within defined boundaries.
 
 ### Tab: Strategic Positioning
 
-#### Q17: What makes Blue Yonder uniquely positioned for this?
+#### Q15: What makes Blue Yonder uniquely positioned for this?
 Blue Yonder combines deep supply chain expertise, a large operational customer footprint, real execution system integration, historical operational data, and existing workflow understanding. This creates a strong foundation for specialized AI systems.
 
-#### Q18: What is the long-term moat?
+#### Q16: What is the long-term moat?
 The moat is not prompts or a single model. It comes from the operational data flywheel, accumulated domain expertise, evaluation infrastructure, workflow integrations, simulated training environments, and continuous learning systems. Together, these create compounding advantages over time — the advantage is in the system and flywheel around the model.
 
-#### Q19: Why not just use OpenAI directly?
+#### Q17: Why not just use OpenAI directly?
 Frontier models provide strong general intelligence, but our differentiation comes from operational context, workflow orchestration, domain specialization through fine-tuning and preference alignment, tool integrations, evaluation infrastructure, and continuous operational learning. The value is in the system and flywheel around the model.
 
-#### Q20: What business impact does the Model Factory enable?
+#### Q18: What business impact does the Model Factory enable?
 The Model Factory enables faster operational issue resolution, workflow automation, scalable operational expertise available 24/7 across all sites, continuous capability improvement where every interaction makes the system better, and reduced operational overhead through less manual investigation and more strategic decision-making.
 
-#### Q21: What are the levels of AI autonomy in supply chain?
+#### Q19: What are the levels of AI autonomy in supply chain?
 The Model Factory enables progression through five levels: Chat (Q&A), Copilots (assisted workflows), Workflow Execution (automated processes), Specialized Agents (where we are today), and ultimately Autonomous Operations. Each level builds on the capabilities established by the previous one.
 
-#### Q22: How does continuous learning work?
+#### Q20: How does continuous learning work?
 The system continuously improves through a flywheel: operational scenarios generate trajectories, which are evaluated, used for fine-tuning, deployed, and then new interactions create more scenarios. Each cycle expands coverage and improves quality. The long-term advantage compounds from this system, not from any single model.
