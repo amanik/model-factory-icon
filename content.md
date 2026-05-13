@@ -161,6 +161,9 @@ The model optimizes for resolving business issues rather than simply answering t
 ### Domain Fine-tuning Callout
 > Domain fine-tuning is fundamentally about operational reasoning. The model learns how work is actually performed: how workflows break down, how decisions are prioritized, how operational context changes meaning, and how enterprise data translates into business action.
 
+### Competitive Positioning (internal)
+When customers ask "why not Palantir / C3.ai / Accenture + GPT-4?": Blue Yonder is the only vendor that combines 30+ years of supply chain domain software, live integrations into the execution systems where work actually happens, a dedicated training pipeline that produces specialized models (not prompt-engineering on top of generic models), and a continuous learning flywheel where every operational interaction makes the system better. Consulting firms can prototype. Cloud providers can host. Only Blue Yonder has the operational data gravity, system integrations, and domain depth to build models that actually work in production warehouse environments.
+
 ---
 
 ## Section 03: How the Model Factory Builds a Specialized SC Model
@@ -320,3 +323,279 @@ The Model Factory enables progression through five levels: Chat (Q&A), Copilots 
 
 #### Q20: How does continuous learning work?
 The system continuously improves through a flywheel: operational scenarios generate trajectories, which are evaluated, used for fine-tuning, deployed, and then new interactions create more scenarios. Each cycle expands coverage and improves quality. The long-term advantage compounds from this system, not from any single model.
+
+### Tab: Objection Handling (internal)
+
+#### Q21: "We already have Copilot / ChatGPT Enterprise."
+Those are general-purpose conversation tools. Ask: "Can Copilot investigate an allocation shortage across your WMS, TMS, and yard management systems, identify recoverable inventory, and recommend an action?" The answer is no. General AI answers questions. Our agents investigate and resolve operational problems.
+
+#### Q22: "This sounds like vaporware. What's actually running?"
+The Allocation Shorts Agent is real. It runs against live enterprise systems, executes structured investigations, and produces actionable recommendations. We can demo it. The factory process that built it is repeatable and already being applied to the next set of use cases.
+
+#### Q23: "Why should I trust AI with operational decisions?"
+You shouldn't, blindly. That's why we built evaluation infrastructure, human review gates, confidence thresholds, scoped permissions, and audit trails. The system is designed for controlled autonomy — it operates within defined boundaries and escalates when uncertain. Trust is earned through measurable performance, not claimed.
+
+#### Q24: "Our data is sensitive. We can't share it for AI training."
+You don't have to. We train with 100% synthetic data generated from simulated environments. No customer production data is used in model training. Your data governance stays exactly as it is.
+
+---
+
+## Simple Section 01: What We Are Building
+
+### Intro
+Your best warehouse operators carry years of knowledge in their heads — how to investigate shortages, which exceptions matter, what to check first. That expertise is hard to hire, impossible to scale, and walks out the door every time someone leaves. Blue Yonder is building AI that captures and scales that operational intelligence — purpose-built assistants that know how your warehouse works, can investigate problems, and take action, available 24/7 across every site.
+
+### Agent Capabilities
+These AI assistants are designed to:
+- Know how your warehouse actually operates
+- Investigate issues and find root causes
+- Take action across your systems
+- Work alongside your team, not replace them
+- Get smarter over time from real-world feedback
+
+### Callout
+> This is owned intelligence, not rented. Blue Yonder's AI is trained specifically for supply chain work — it understands your operations, speaks your language, and gets better with every shift. Think of it as a training academy for AI specialists, where each graduate is purpose-built for your world.
+
+### Model Architecture
+We use different approaches depending on the complexity of the task. For simple requests, AI routes to the right specialist. For complex problems, a general AI coordinates while specialists handle the domain-specific work. Our long-term vision is a single AI that deeply understands all supply chain operations end-to-end.
+
+**Routing Model**
+Simple requests go directly to the right specialist AI — fast and efficient.
+
+**Sub-Agent Model**
+A general AI coordinates the big picture while specialist AI handles the warehouse-specific tasks.
+
+**Foundational Supply Chain Model**
+Our long-term vision: one AI that understands the entire supply chain from end to end.
+
+---
+
+## Simple Section 02: Why Generic AI Is Not Enough
+
+### Intro
+Frontier models from OpenAI, Anthropic, and others are impressive for general questions, but they weren't built for running a warehouse. Supply chain operations need AI that understands your systems, your terminology, and your priorities — not AI that gives plausible-sounding answers without real operational knowledge.
+
+### Comparison: Generic AI vs Specialized AI
+
+| Generic AI | Specialized AI (Model Factory) |
+|---|---|
+| Answers general questions well | Understands your specific operations |
+| No memory of your workflows | Knows how your warehouse runs |
+| Cannot access your systems | Works with your enterprise tools |
+| Gives best-guess answers | Delivers accurate, actionable results |
+| One-size-fits-all | Purpose-built for supply chain |
+| No way to measure reliability | Tested against real operational outcomes |
+
+### Callout
+> General AI is like hiring a brilliant generalist who's never worked in a warehouse. Our specialized AI is like hiring an expert who's been trained on thousands of warehouse scenarios and knows exactly how to investigate and resolve issues.
+
+### Where Frontier Models Fail
+
+Even the best general AI tools struggle with real warehouse operations.
+
+**They look right but aren't**
+General AI can produce answers that sound correct but don't actually solve the operational problem — style over substance. In a warehouse, a plausible-sounding wrong answer wastes more time than no answer at all.
+
+**They don't speak your language**
+General AI misunderstands warehouse terms, confuses item codes, and suggests solutions that don't match real workflows.
+
+**They lack operational instinct**
+Without deep warehouse experience, general AI can't tell what's urgent, what's routine, or what matters most for your business.
+
+**They forget between conversations**
+Every conversation starts from scratch. There's no awareness of ongoing issues, shift priorities, or what was already tried.
+
+### How We Train AI to Think Like Your Best Operators
+
+We train our AI specifically on how warehouse operations work — not just the terminology, but the actual decision-making process, the workflows, and the business judgment that experienced operators use every day.
+
+### What Specialized Training Produces
+
+**Understands How Work Gets Done**
+The AI learns the natural flow of warehouse operations — how investigations unfold, what depends on what, and what to check next.
+
+**Makes Sense of Raw Data**
+Rather than just showing system outputs, the AI interprets data in business terms — what's urgent, what's impacted, and what it means for operations.
+
+**Knows When to Act and When to Ask**
+The AI knows when it has enough information to recommend action, when to ask a clarifying question, and when to escalate to a human.
+
+**Focuses on What Matters Most**
+Not everything is equally important. The AI prioritizes based on business impact — critical shortages before routine inquiries.
+
+**Solves Problems, Not Just Answers Questions**
+The AI is focused on resolving the actual operational issue, not just giving a technically correct answer.
+
+### Specialized Training Callout
+> Our AI doesn't just know supply chain vocabulary — it understands how work is actually performed: which steps come first, what matters most, and how to turn raw data into clear business recommendations. This is owned intelligence that compounds over time.
+
+---
+
+## Simple Section 03: How the Model Factory Builds a Specialized SC Model
+
+### Intro
+Building specialized AI is a repeatable five-step process. Each step feeds the next, creating a continuous cycle of improvement — the AI gets smarter and more capable with every iteration. This is how Blue Yonder builds owned intelligence: a system that compounds in value the longer you use it.
+
+### 1. Define the Job
+First, we define exactly what the AI needs to do — which operational tasks, what success looks like, and how we'll measure quality. Clear goals before any training begins.
+
+### 2. Generate Training Scenarios
+We create realistic training scenarios that mirror real warehouse operations — thousands of them, covering normal operations, unusual situations, and rare edge cases. Importantly, we generate these scenarios entirely from simulation. No customer data is ever used in training — your data stays completely separate.
+
+### 3. Train the AI
+We teach the AI two things: how your operations work (the knowledge) and how Blue Yonder wants tasks completed (the quality standards). This ensures both accuracy and consistency.
+
+### 4. Test and Deploy
+Before deployment, the AI goes through rigorous testing — scenario replays, benchmark checks, and human expert review. It only goes live when it meets our quality bar.
+
+### 5. Improve Continuously
+Once deployed, every interaction creates data that makes the next version better. The AI continuously learns from real-world feedback and new scenarios — the system gets smarter the longer it runs.
+
+### Callout
+> This is the flywheel: operational scenarios create training data, which creates better AI, which handles more scenarios. The competitive advantage isn't a single model — it's a system that compounds in value over time. The longer it runs, the better it gets.
+
+---
+
+## Simple Section 04: First Agent — Allocation Shorts
+
+### Intro
+Our first AI assistant tackles one of the most common warehouse headaches: figuring out why orders can't be fully filled from available inventory. This is where the Model Factory moves from concept to proof.
+
+### Tag
+Warehouse Operations
+
+### What the Agent Does
+#### Allocation Shorts Investigation
+When a warehouse can't fill an order completely, someone has to figure out why. Today, that means an experienced operator manually checking multiple systems, reviewing inventory, looking at order priorities, and tracking down the root cause. A typical investigation takes 30-60 minutes of skilled operator time and requires deep knowledge that's hard to find and harder to scale.
+
+Our AI assistant automates this entire investigation — from identifying the problem to recommending a resolution — completing in minutes what previously required the better part of an hour. It works across shifts, never forgets a pattern, and gets smarter with every investigation.
+
+### Image Caption
+Agent resolves allocation shorts: identifies recoverable inventory, executes yard move, tracks fulfillment via Live Activity
+
+### Agent Workflow Steps
+1. User Request
+2. Agent Reasoning
+3. Tool / API Calls
+4. Operational Analysis
+5. Recommendation
+
+### Additional Use Cases
+- Short order investigation
+- Yard management
+- Inventory analysis
+- Workflow optimization
+- Operational exception handling
+
+### Next Steps
+
+**Ship the Allocation Shorts Agent**
+Launch the first AI assistant for warehouse shortage investigation — automating a process that currently takes significant manual effort.
+
+**Build the Next Wave of Agents**
+The same factory process is already being applied to more supply chain workflows — yard management, demand analysis, and exception handling across the Blue Yonder product suite.
+
+**Get Early Access**
+Talk to your Blue Yonder account team to learn more about timelines and how AI-powered supply chain assistants fit your operations.
+
+---
+
+## Simple Section 05: Questions & Answers
+
+### Tab: Top Questions
+
+#### Q1: What exactly is a "Model Factory"?
+A proven, repeatable process for building AI assistants that specialize in supply chain work. Rather than one-off projects, it's a production system that can create, test, and continuously improve AI capabilities at scale.
+
+#### Q2: How is this different from simple RAG or chatbot systems?
+Chatbots look up information and repeat it back. Our AI assistants can actually investigate problems, take actions across systems, follow multi-step workflows, and improve over time. They're operational assistants, not search engines.
+
+#### Q8: Where does the training data come from?
+We train entirely with generated scenarios — realistic simulations that mirror real warehouse operations, but created by us, not pulled from your systems. No customer production data is ever used in training. Your data stays completely separate.
+
+#### Q9: How do you handle privacy and customer data governance?
+Privacy is built into the design from day one. We use strict access controls, data minimization, region-aware processing, and avoid using personal information unless absolutely necessary and permitted. Everything is governed by Blue Yonder's security, privacy, and Responsible AI processes.
+
+#### Q11: What role do human operators still play?
+Humans are essential. Experts provide the knowledge, validate the AI's behavior, handle exceptions, and set operational policies. Our goal is to scale expertise — making your best operators' knowledge available across all shifts and sites — not to remove human oversight.
+
+#### Q14: What happens when the model is wrong?
+Safety is built in. The AI has clear boundaries for what it can and can't do, knows when to escalate to a human, tracks its confidence level, and maintains a full audit trail. If it's unsure, it asks rather than guesses.
+
+#### Q17: Why not just use OpenAI or another general AI provider directly?
+General AI models are the engine, but we're the team that knows warehouses. The model itself is maybe 10% of the value. The other 90% is operational context, workflow integration, quality evaluation, and continuous learning from real use. You can't prompt your way to that — it takes deep supply chain specialization and years of system integration.
+
+#### Q18: What business impact does the Model Factory enable?
+Faster problem resolution, automated investigations, expert-level support available 24/7 at every site, systems that get smarter over time, and less time spent on manual investigation — freeing your team for higher-value strategic work.
+
+### Tab: Fundamentals
+
+#### Q1: What exactly is a "Model Factory"?
+A proven, repeatable process for building AI assistants that specialize in supply chain work. Rather than one-off projects, it's a production system that can create, test, and continuously improve AI capabilities at scale.
+
+#### Q2: How is this different from simple RAG or chatbot systems?
+Chatbots look up information and repeat it back. Our AI assistants can actually investigate problems, take actions across systems, follow multi-step workflows, and improve over time. They're operational assistants, not search engines.
+
+### Tab: Technical Approach
+
+#### Q3: How exactly do you train your models?
+We start with powerful general-purpose AI and specialize it for supply chain work through multiple training stages — teaching it operational knowledge, quality standards, and decision-making through simulated warehouse scenarios. The models improve continuously from real-world feedback.
+
+#### Q4: Are you training AI models from scratch?
+No. We take existing, proven AI models and specialize them for supply chain work. This gives us the best of both worlds — the power of the best available AI plus deep supply chain expertise built over decades.
+
+#### Q5: How does the AI learn to handle new situations?
+We use simulation to let the AI practice thousands of warehouse scenarios safely — learning what works, what doesn't, and how to handle unusual situations — all without any risk to your real operations.
+
+#### Q6: How do you ensure the AI meets Blue Yonder's quality standards?
+After teaching the AI how operations work, we train it on quality standards — which approaches are more thorough, which recommendations are more useful, and how Blue Yonder expects tasks to be completed. This ensures the AI completes tasks the way you'd want your best operator to complete them.
+
+#### Q7: Can you explain the architecture in a few sentences?
+We use different setups depending on the task complexity. For simple tasks, AI routes requests to the right specialist. For complex problems, a general AI coordinates while a supply chain specialist does the detailed work. Our long-term vision is a single AI model that handles everything end-to-end.
+
+### Tab: Data & Privacy
+
+#### Q8: Where does the training data come from?
+We train entirely with generated scenarios — realistic simulations that mirror real warehouse operations, but created by us, not pulled from your systems. No customer production data is ever used in training. Your data stays completely separate.
+
+#### Q9: How do you handle privacy and customer data governance?
+Privacy is built into the design from day one. We use strict access controls, data minimization, region-aware processing, and avoid using personal information unless absolutely necessary and permitted. Where appropriate, we also use anonymization techniques. Everything is governed by Blue Yonder's security, privacy, and Responsible AI processes.
+
+### Tab: Human Expertise
+
+#### Q10: How do you capture and use SME expertise?
+We work closely with warehouse experts through walkthroughs, demonstrations, and feedback sessions. A lot of warehouse knowledge is instinctive — it's never been written down — so we learn by observing expert decisions and feeding that wisdom into the AI's training.
+
+#### Q11: What role do human operators still play?
+Humans are essential. Experts provide the knowledge, validate the AI's behavior, handle exceptions, and set operational policies. Our goal is to scale expertise — making your best operators' knowledge available across all shifts and sites — not to remove human oversight.
+
+### Tab: Evaluation & Safety
+
+#### Q12: How do you evaluate success?
+We test across multiple dimensions: Does it get the right answer? Does it complete the full workflow? Does it use tools correctly? Is it consistent? Is it fast enough? And critically — does it meet the standards human experts set? The focus is operational reliability.
+
+#### Q13: How do you avoid overfitting to one warehouse or customer?
+We specifically design for variety — training on diverse warehouse configurations, different operational patterns, and many scenario types. The goal is AI that works across different environments, not AI that only works in one specific warehouse.
+
+#### Q14: What happens when the model is wrong?
+Safety is built in. The AI has clear boundaries for what it can and can't do, knows when to escalate to a human, tracks its confidence level, and maintains a full audit trail. If it's unsure, it asks rather than guesses.
+
+### Tab: Strategic Positioning
+
+#### Q15: What makes Blue Yonder uniquely positioned for this?
+Blue Yonder has decades of supply chain expertise, a large customer base running real operations, deep system integrations, and extensive operational data. Nobody else combines this domain knowledge with AI capabilities at this scale.
+
+#### Q16: What is the long-term moat?
+The competitive advantage isn't a single AI model — it's the entire system. Operational data feeds better training, which creates better AI, which generates more operational insights. This flywheel gets stronger over time, and competitors can't replicate the accumulated domain knowledge.
+
+#### Q17: Why not just use OpenAI or another general AI provider directly?
+General AI models are the engine, but we're the team that knows warehouses. The model itself is maybe 10% of the value. The other 90% is operational context, workflow integration, quality evaluation, and continuous learning from real use. You can't prompt your way to that — it takes deep supply chain specialization and years of system integration. The AI model is one piece. The system around it is what delivers results.
+
+#### Q18: What business impact does the Model Factory enable?
+Faster problem resolution, automated investigations, expert-level support available 24/7 at every site, systems that get smarter over time, and less time spent on manual investigation — freeing your team for higher-value strategic work.
+
+#### Q19: What are the levels of AI autonomy in supply chain?
+We're progressing through five levels: basic Q&A, assisted workflows (copilots), automated processes, specialized agents (where we are today), and ultimately autonomous operations. Each level builds on the last.
+
+#### Q20: How does continuous learning work?
+Every interaction makes the system better. Real operational scenarios feed back into training, which creates better AI, which handles more scenarios. This virtuous cycle means the system improves continuously — the longer it runs, the better it gets.
