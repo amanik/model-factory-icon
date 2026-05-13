@@ -215,10 +215,10 @@ Agent conversation: structured investigation with tool calls, data tables, and o
 
 ### Agent Workflow Steps
 1. User Request
-2. **Agent Reasoning** (highlighted)
+2. Agent Reasoning
 3. Tool / API Calls
 4. Operational Analysis
-5. **Recommendation** (highlighted)
+5. Recommendation
 
 <!-- explainer variant uses "Analysis" instead of "Operational Analysis" for step 4 -->
 
