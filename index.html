@@ -101,11 +101,8 @@ button { font-family: var(--sans); cursor: pointer; }
   border-radius: var(--r-pill);
   border: 1.5px solid rgba(54,96,189,0.15);
 }
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 48px;
-  align-items: center;
+.hero-text {
+  max-width: 640px;
 }
 .eyebrow {
   font-size: 11px;
@@ -156,57 +153,7 @@ button { font-family: var(--sans); cursor: pointer; }
   height: auto;
 }
 
-/* Hero pipeline diagram */
-.factory-flow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  padding: 8px 0;
-}
-.factory-flow .stage {
-  width: 220px;
-  padding: 11px 16px;
-  text-align: center;
-  background: var(--byx-card);
-  border: 1.5px solid var(--byx-200);
-  border-radius: var(--r4);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--byx-800);
-  position: relative;
-  z-index: 1;
-}
-/* .primary stage class removed — all stages uniform */
-.factory-flow .connector {
-  width: 2px;
-  height: 16px;
-  background: var(--byx-indigo);
-  position: relative;
-}
-.factory-flow .connector::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0; height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid var(--byx-indigo);
-}
-.feedback-label {
-  position: absolute;
-  right: -24px;
-  top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--byx-400);
-  white-space: nowrap;
-}
+/* (factory-flow removed — hero uses wave animation instead) */
 .feedback-line {
   position: absolute;
   right: -16px;
@@ -847,8 +794,7 @@ body.slide-mode .site-footer { display: none; }
   .capability-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 880px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
-  .factory-flow { max-width: 260px; margin: 0 auto; }
+  .hero-text { max-width: 100%; }
   .compare-grid { grid-template-columns: 1fr; }
   .qa-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
   .masthead h1 { font-size: 32px; }
@@ -916,25 +862,10 @@ body.slide-mode .site-footer { display: none; }
     <img src="https://edge.sitecorecloud.io/blueyonderie8e6-corporateefb0-prod6ccb-be06/media/project/blueyonder/shared/default-images/logo-blue.png" alt="Blue Yonder" class="by-logo" width="140" height="32">
     <span class="conf-badge">ICON 2026</span>
   </div>
-  <div class="hero-grid">
-    <div>
-      <p data-section="hero" data-sub="eyebrow" class="eyebrow"></p>
-      <h1 data-section="hero" data-sub="heading"></h1>
-      <p data-section="hero" data-sub="intro" class="intro"></p>
-    </div>
-    <div class="factory-flow">
-      <div class="stage" data-stage="1"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="2"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="3"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="4"></div>
-      <div class="connector"></div>
-      <div class="stage" data-stage="5"></div>
-      <div class="feedback-line"></div>
-      <span class="feedback-label" data-stage="feedback"></span>
-    </div>
+  <div class="hero-text">
+    <p data-section="hero" data-sub="eyebrow" class="eyebrow"></p>
+    <h1 data-section="hero" data-sub="heading"></h1>
+    <p data-section="hero" data-sub="intro" class="intro"></p>
   </div>
   <div class="hero-wave">
     <canvas id="hero-waves" width="1920" height="420"></canvas>
@@ -969,19 +900,24 @@ body.slide-mode .site-footer { display: none; }
         .pipe-box-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 500; fill: #374151; }
         .pipe-arrow { stroke: #d1d5db; stroke-width: 1.5; fill: none; marker-end: url(#pipe-head); }
         .pipe-output-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #2a4f9e; }
+        @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+        .feedback-path { stroke: #3660bd; stroke-width: 1.5; fill: none; stroke-dasharray: 4,4; animation: dashFlow 1.2s linear infinite; }
       </style>
       <defs>
         <marker id="pipe-head" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6" fill="none" stroke="#d1d5db" stroke-width="1.5"/>
+        </marker>
+        <marker id="pipe-loop" markerWidth="6" markerHeight="5" refX="1" refY="2.5" orient="auto">
+          <path d="M6,0 L0,2.5 L6,5" fill="none" stroke="#3660bd" stroke-width="1.5"/>
         </marker>
       </defs>
 
       <!-- INPUTS -->
       <text x="105" y="22" text-anchor="middle" class="pipe-label">Inputs</text>
       <rect x="10" y="36" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
-      <text x="105" y="59" text-anchor="middle" class="pipe-box-text">Operational Data</text>
+      <text x="105" y="59" text-anchor="middle" class="pipe-box-text">SME Knowledge</text>
       <rect x="10" y="82" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
-      <text x="105" y="105" text-anchor="middle" class="pipe-box-text">Jobs to Be Done</text>
+      <text x="105" y="105" text-anchor="middle" class="pipe-box-text">Use Cases</text>
       <rect x="10" y="128" width="190" height="36" rx="8" fill="#f9f9fb" stroke="#e6e6eb" stroke-width="1.5"/>
       <text x="105" y="151" text-anchor="middle" class="pipe-box-text">Success Criteria</text>
 
@@ -999,14 +935,9 @@ body.slide-mode .site-footer { display: none; }
       <text x="486" y="77" text-anchor="middle" class="pipe-box-text" style="font-size:11px">RL / Simulation</text>
       <rect x="432" y="100" width="108" height="32" rx="6" fill="#fff" stroke="#e6e6eb" stroke-width="1"/>
       <text x="486" y="121" text-anchor="middle" class="pipe-box-text" style="font-size:11px">Evaluation</text>
-      <!-- feedback loop -->
-      <path d="M540,142 Q555,142 555,130 L555,80 Q555,68 540,68" stroke="#3660bd" stroke-width="1" fill="none" stroke-dasharray="3,3" marker-end="url(#pipe-loop)"/>
+      <!-- animated feedback loop -->
+      <path class="feedback-path" d="M540,132 C558,132 562,120 562,100 C562,80 558,68 540,68" marker-end="url(#pipe-loop)"/>
       <text x="420" y="156" text-anchor="middle" style="font-family:'Inter',sans-serif; font-size:10px; fill:#3660bd; font-style:italic;">continuous improvement</text>
-      <defs>
-        <marker id="pipe-loop" markerWidth="6" markerHeight="5" refX="1" refY="2.5" orient="auto">
-          <path d="M6,0 L0,2.5 L6,5" fill="none" stroke="#3660bd" stroke-width="1"/>
-        </marker>
-      </defs>
 
       <!-- Arrow 2 -->
       <line x1="570" y1="100" x2="630" y2="100" class="pipe-arrow"/>
@@ -1387,35 +1318,6 @@ function injectContent(sections) {
 }
 
 // ----- 3. Special renderers -----
-
-function renderHeroFlow(sections) {
-  var hero = sections['hero'];
-  if (!hero || !hero['factory-flow-diagram-pipeline-stages']) return;
-
-  var text = hero['factory-flow-diagram-pipeline-stages'];
-  var lines = text.split('\n');
-  var stages = [];
-  var feedbackLabel = '';
-
-  lines.forEach(function(line) {
-    var numberedMatch = line.match(/^\d+\.\s+(.+)/);
-    if (numberedMatch) {
-      stages.push(numberedMatch[1].trim());
-    }
-    var feedbackMatch = line.match(/^-\s+Feedback loop label:\s*(.+)/);
-    if (feedbackMatch) {
-      feedbackLabel = feedbackMatch[1].trim();
-    }
-  });
-
-  stages.forEach(function(label, i) {
-    var el = document.querySelector('[data-stage="' + (i + 1) + '"]');
-    if (el) el.textContent = label;
-  });
-
-  var feedbackEl = document.querySelector('[data-stage="feedback"]');
-  if (feedbackEl && feedbackLabel) feedbackEl.textContent = feedbackLabel;
-}
 
 function renderComparisonTable(section) {
   if (!section) return;
@@ -1939,7 +1841,7 @@ async function init() {
     injectContent(sections);
 
     // Special renderers
-    renderHeroFlow(sections);
+
     renderComparisonTable(sections['section-02']);
     renderCapabilityGrid(sections);
     renderFailureTabs(sections);
