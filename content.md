@@ -137,7 +137,7 @@ No memory across sessions. Misinterprets user intent without workflow awareness.
 **Gaming vs. Solving**
 Reward hacking and pattern-matching produce outputs that look right but don't resolve the actual operational problem. Stylistic and formatting issues mask substantive gaps in reasoning and execution.
 
-### What Domain Fine-tuning Actually Means
+### Domain Fine-tuning to Address Failure Modes
 
 Domain fine-tuning is not simply teaching a model industry terminology or adding more prompts. The real shift is that the model learns how a business domain operates: how workflows decompose, how operational decisions are made, what context matters, and how actions should be executed safely.
 
